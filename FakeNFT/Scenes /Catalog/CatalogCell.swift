@@ -6,9 +6,8 @@
 //
 
 import UIKit
-import Kingfisher
 
-final class CatalogCell: UITableViewCell {
+final class CatalogCell: UITableViewCell, ReuseIdentifying {
 
     lazy var catalogCellImage: UIImageView = {
         let imageView = UIImageView()
@@ -38,11 +37,6 @@ final class CatalogCell: UITableViewCell {
         assertionFailure("init(coder:) has not been implemented")
         return nil
     }
-    
-    override func prepareForReuse() {
-           super.prepareForReuse()
-           catalogCellImage.kf.cancelDownloadTask()
-       }
 
     func setupUI() {
         contentView.addSubview(catalogCellImage)
@@ -60,4 +54,3 @@ final class CatalogCell: UITableViewCell {
         ])
     }
 }
-
