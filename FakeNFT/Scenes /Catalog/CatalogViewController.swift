@@ -56,7 +56,17 @@ final class CatalogViewController: UIViewController {
         ])
     }
     
-    @objc func showSortingMenu() { }
+    @objc func showSortingMenu() {
+        let alertMenu = UIAlertController(title: AppStrings.CatalogVC.sorting, message: nil, preferredStyle: .actionSheet)
+        
+        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.sortByName, style: .default, handler: { [weak self] (UIAlertAction) in self
+        }))
+        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.sortByNFTCount, style: .default, handler: { [weak self] (UIAlertAction) in self
+        }))
+        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.close, style: .cancel))
+        
+        present(alertMenu, animated: true)
+    }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
