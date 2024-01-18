@@ -9,7 +9,7 @@ Task-tracker: https://github.com/users/iamjohansson/projects/2/views/2
 
 ## Экран Catalogue
 
-### Этап 1: Экран каталога. Расчет: 33 часа. Фактически: ?? 
+### Этап 1: Экран каталога. Расчет: 33 часа. Фактически: 12 часов. 
 
 - Верстка UI:
     - Создать CatalogViewController - 1 ч.
