@@ -2,7 +2,6 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     
-    var servicesAssembly: ServicesAssembly!
     let appConfiguration: AppConfiguration
     
     init(appConfiguration: AppConfiguration) {

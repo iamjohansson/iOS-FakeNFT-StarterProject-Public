@@ -12,7 +12,11 @@ final class AppConfiguration {
     let catalogNavigationController: UINavigationController
     
     init() {
-        catalogViewController = CatalogViewController()
+        let networkClient = DefaultNetworkClient()
+        let dataProvider = CatalogDataProvider(networkClient: DefaultNetworkClient())
+        let catalogPresenter = CatalogPresenter(dataProvider: dataProvider)
+        
+        catalogViewController = CatalogViewController(presenter: catalogPresenter)
         catalogNavigationController = UINavigationController(rootViewController: catalogViewController)
     }
 }

@@ -6,10 +6,24 @@
 //
 
 import UIKit
+import Kingfisher
 
-final class CatalogViewController: UIViewController {
+// MARK: - Protocol
+
+protocol CatalogViewControllerProtocol: AnyObject {
+    func reloadTableView()
+}
+
+final class CatalogViewController: UIViewController, CatalogViewControllerProtocol {
+    private var presenter: CatalogPresenterProtocol
     
-    lazy private var sortButton: UIBarButtonItem = {
+    private lazy var collectionsRefreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(loadNFTCollections), for: .valueChanged)
+        return refreshControl
+    }()
+    
+    private lazy var sortButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
             image: UIImage(named: "sort"),
             style: .plain,
@@ -30,12 +44,25 @@ final class CatalogViewController: UIViewController {
         return tableView
     }()
     
+    init(presenter: CatalogPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        assertionFailure("init(coder:) has not been implemented")
+        return nil
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupNavigationBar()
         setupConstraints()
+        presenter.viewController = self
+        loadNFTCollections()
         view.backgroundColor = .ypWhite
+        self.collectionsRefreshControl.endRefreshing()
     }
     
     private func setupNavigationBar() {
@@ -56,16 +83,30 @@ final class CatalogViewController: UIViewController {
         ])
     }
     
+    func reloadTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     @objc func showSortingMenu() {
         let alertMenu = UIAlertController(title: AppStrings.CatalogVC.sorting, message: nil, preferredStyle: .actionSheet)
         
-        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.sortByName, style: .default, handler: { [weak self] (UIAlertAction) in self
+        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.sortByName, style: .default, handler: { [weak self] (_) in
+            self?.presenter.sortNFTS(by: .name)
+            self?.reloadTableView()
         }))
-        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.sortByNFTCount, style: .default, handler: { [weak self] (UIAlertAction) in self
+        alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.sortByNFTCount, style: .default, handler: { [weak self] (_) in
+            self?.presenter.sortNFTS(by: .nftCount)
+            self?.reloadTableView()
         }))
         alertMenu.addAction(UIAlertAction(title: AppStrings.CatalogVC.close, style: .cancel))
         
         present(alertMenu, animated: true)
+    }
+    
+    @objc func loadNFTCollections() {
+        presenter.fetchCollections()
     }
 }
 
@@ -74,11 +115,17 @@ final class CatalogViewController: UIViewController {
 extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        3
+        presenter.dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CatalogCell = tableView.dequeueReusableCell()
+        let nftModel = presenter.dataSource[indexPath.row]
+        let url = URL(string: nftModel.cover.urlDecoder)
+        
+        cell.selectionStyle = .none
+        cell.catalogCellImage.kf.setImage(with: url)
+        cell.catalogNameLabel.text = "\(nftModel.name) (\(nftModel.nftCount))"
         return cell
     }
     
