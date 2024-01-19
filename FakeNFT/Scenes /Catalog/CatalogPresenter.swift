@@ -10,10 +10,10 @@ import Foundation
 // MARK: - Protocol
 
 protocol CatalogPresenterProtocol: AnyObject {
-    var dataSource: [NFTCollection] { get }
     var viewController: CatalogViewControllerProtocol? { get set }
-    func fetchCollections()
+    func fetchCollections(completion: @escaping ([NFTCollection]) -> Void)
     func sortNFTS(by: NFTCollectionsSortOptions)
+    func getDataSource() -> [NFTCollection]
 }
 
 // MARK: - Final Class
@@ -23,8 +23,8 @@ final class CatalogPresenter: CatalogPresenterProtocol {
     weak var viewController: CatalogViewControllerProtocol?
     private var dataProvider: CatalogDataProviderProtocol
 
-    var dataSource: [NFTCollection] {
-        dataProvider.NFTCollections
+    private var dataSource: [NFTCollection] {
+        dataProvider.getCollectionNFT()
     }
 
     init(dataProvider: CatalogDataProviderProtocol) {
@@ -32,10 +32,14 @@ final class CatalogPresenter: CatalogPresenterProtocol {
     }
 
 
-    func fetchCollections() {
-        dataProvider.fetchNFTCollection { [weak self] in
+    func fetchCollections(completion: @escaping ([NFTCollection]) -> Void) {
+        dataProvider.fetchNFTCollection { [weak self] updatedData in
             self?.viewController?.reloadTableView()
         }
+    }
+    
+    func getDataSource() -> [NFTCollection] {
+        return self.dataSource
     }
 
     func sortNFTS(by: NFTCollectionsSortOptions) {

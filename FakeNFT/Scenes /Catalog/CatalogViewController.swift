@@ -32,7 +32,7 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
         return button
     }()
     
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         var tableView = UITableView()
         tableView.register(CatalogCell.self)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,7 +106,9 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
     }
     
     @objc func loadNFTCollections() {
-        presenter.fetchCollections()
+        presenter.fetchCollections { [weak self] updatedData in
+            self?.reloadTableView()
+        }
     }
 }
 
@@ -115,17 +117,17 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
 extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.dataSource.count
+        presenter.getDataSource().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CatalogCell = tableView.dequeueReusableCell()
-        let nftModel = presenter.dataSource[indexPath.row]
+        let nftModel = presenter.getDataSource()[indexPath.row]
         let url = URL(string: nftModel.cover.urlDecoder)
         
         cell.selectionStyle = .none
-        cell.catalogCellImage.kf.setImage(with: url)
-        cell.catalogNameLabel.text = "\(nftModel.name) (\(nftModel.nftCount))"
+        cell.setCellImage(with: url)
+        cell.setNameLabel(with: "\(nftModel.name) (\(nftModel.nfts.count))")
         return cell
     }
     

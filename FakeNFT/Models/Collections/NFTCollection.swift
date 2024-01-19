@@ -14,8 +14,4 @@ struct NFTCollection: Decodable {
     let id: String
     let description: String
     let author: String
-
-    var nftCount: Int {
-        nfts.count
-    }
 }

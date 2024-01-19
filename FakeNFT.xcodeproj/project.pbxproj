@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		01566A8C2B53425B00B5E9C6 /* Docs in Resources */ = {isa = PBXBuildFile; fileRef = 01566A8B2B53425B00B5E9C6 /* Docs */; };
 		01566A8F2B53499E00B5E9C6 /* CatalogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01566A8E2B53499E00B5E9C6 /* CatalogCell.swift */; };
 		01566A912B53553100B5E9C6 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01566A902B53553100B5E9C6 /* CatalogViewController.swift */; };
 		01566A942B55D54E00B5E9C6 /* UserInterfaceText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01566A932B55D54E00B5E9C6 /* UserInterfaceText.swift */; };
@@ -80,7 +79,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		01566A8B2B53425B00B5E9C6 /* Docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Docs; sourceTree = "<group>"; };
 		01566A8E2B53499E00B5E9C6 /* CatalogCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCell.swift; sourceTree = "<group>"; };
 		01566A902B53553100B5E9C6 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
 		01566A932B55D54E00B5E9C6 /* UserInterfaceText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterfaceText.swift; sourceTree = "<group>"; };
@@ -291,7 +289,6 @@
 			children = (
 				01566A9D2B567CF000B5E9C6 /* DataProvider */,
 				01566A952B55E6AD00B5E9C6 /* AppConfiguration */,
-				01566A8B2B53425B00B5E9C6 /* Docs */,
 				3F68069629CBBAF100B4F915 /* AppDelegate.swift */,
 				3F68069829CBBAF100B4F915 /* SceneDelegate.swift */,
 				E1CD40DA2A96BE9B00BE7FE8 /* Resources */,
@@ -570,7 +567,6 @@
 				9E0A4D4E2B52E5B000C70B0D /* SFProText-Regular.ttf in Resources */,
 				9E0A4D4A2B52E5A200C70B0D /* SFProText-Bold.ttf in Resources */,
 				9E0A4D4C2B52E5A900C70B0D /* SFProText-Medium.ttf in Resources */,
-				01566A8C2B53425B00B5E9C6 /* Docs in Resources */,
 				3F6806A029CBBAF200B4F915 /* Assets.xcassets in Resources */,
 				3F68069E29CBBAF100B4F915 /* Main.storyboard in Resources */,
 			);
