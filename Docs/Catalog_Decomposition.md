@@ -9,15 +9,15 @@ Task-tracker: https://github.com/users/iamjohansson/projects/2/views/2
 
 ## Экран Catalogue
 
-### Этап 1: Экран каталога. Расчет: 33 часа. Фактически: ?? 
+### Этап 1: Экран каталога. Расчет: 33 часа. Фактически: 13,5 часов. 
 
 - Верстка UI:
-    - Создать CatalogViewController - 1 ч.
-    - Сверстать ячейку CatalogueCell - 3 ч.
-    - Создать кнопку sortButton с UIAlertController - 3 ч.
-    - Сверстать экран и добавить: tableView, navigationBar, sortButton - 2 ч.
-- Написать логику фильтрации - 4 ч.
-- Написать логику Presenter и работы с сетью - 20 ч.
+    - Создать CatalogViewController - [1 ч, фактически: 1 ч.]
+    - Сверстать ячейку CatalogueCell - [3 ч, фактически: 1,5ч]
+    - Создать кнопку sortButton с UIAlertController - [3 ч, фактически: 2 ч.]
+    - Сверстать экран и добавить: tableView, navigationBar, sortButton - [2 ч, фактически: 1 ч.]
+- Написать логику фильтрации - [4 ч, фактически: 1 ч.]
+- Написать логику Presenter и работы с сетью - [20 ч, фактически: 7ч.]
 
 ### Этап 2: Экран коллекции NFT. Расчет: 36 часов. Фактически: ??
 
