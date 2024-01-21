@@ -133,4 +133,48 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
             cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
         ])
     }
+    
+    func renderCellForModel() {
+        guard let nftModel = nftModel else { return }
+        
+        if let imageURL = nftModel.images.first {
+            nftImage.kf.setImage(with: imageURL)
+        }
+        
+        nftName.text = nftModel.name
+        nftPrice.text = "\(nftModel.price) ETH"
+        ratingStarsView.configureRating(nftModel.rating)
+    }
+    
+    private func configureLikeButtonImage() {
+        if likedByUser {
+            likedByUser = false
+            likeButton.setImage(UIImage(named: "likeNotActive"), for: .normal)
+        } else {
+            likedByUser = true
+            likeButton.setImage(UIImage(named: "likeActive"), for: .normal)
+        }
+    }
+    
+    private func configureCartButtonImage() {
+        if itemInCart {
+            itemInCart = false
+            cartButton.setImage(UIImage(named: "addToCart"), for: .normal)
+        } else {
+            itemInCart = true
+            cartButton.setImage(UIImage(named: "deleteFromCart"), for: .normal)
+        }
+    }
+    
+    // MARK: - @objc func
+    
+    @objc func userDidLike() {
+        configureLikeButtonImage()
+        delegate?.onLikeButtonTapped(cell: self)
+    }
+    
+    @objc func cartItemAdded() {
+        configureCartButtonImage()
+        delegate?.addToCartButtonTapped(cell: self)
+    }
 }
