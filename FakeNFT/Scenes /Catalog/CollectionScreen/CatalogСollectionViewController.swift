@@ -226,16 +226,16 @@ extension CatalogСollectionViewController: NFTCollectionCellDelegate {
 extension CatalogСollectionViewController: CatalogСollectionViewControllerProtocol {
     func renderViewData(viewData: CatalogCollectionViewData) {
         DispatchQueue.main.async {
-                    self.loadCoverImage(url: viewData.coverImageURL)
-                    self.titleLabel.text = viewData.title
-                    self.authorLink.text = viewData.authorName
-                    self.collectionDescriptionLabel.text = viewData.description}
-            }
-            
-            private func loadCoverImage(url : String) {
-                let url = URL(string: url.urlEncoder)
-                coverImageView.kf.setImage(with: url)
-
+            self.loadCoverImage(url: viewData.coverImageURL)
+            self.titleLabel.text = viewData.title
+            self.authorLink.text = viewData.authorName
+            self.collectionDescriptionLabel.text = viewData.description}
+    }
+    
+    private func loadCoverImage(url : String) {
+        let url = URL(string: url.urlEncoder)
+        coverImageView.kf.setImage(with: url)
+        
     }
     
     func reloadCollectionView() {

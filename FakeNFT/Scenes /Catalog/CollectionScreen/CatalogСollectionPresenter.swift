@@ -22,28 +22,17 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
 // MARK: - Final Class
 
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
-    func loadNFTs() {
-        var nftArray: [Nft] = []
-    }
-    
-    func toggleLikeStatus(model: Nft) {
-        <#code#>
-    }
-    
-    func toggleCartStatus(model: Nft) {
-        <#code#>
-    }
-    
-    
     weak var viewController: CatalogСollectionViewControllerProtocol?
+    private var dataProvider: CollectionDataProvider
     
     let nftModel: NFTCollection
     var userURL: String?
     var nftArray: [Nft] = []
+    var profileModel: [ProfileModel] = []
     
-    
-    init(nftModel: NFTCollection) {
+    init(nftModel: NFTCollection, dataProvider: CollectionDataProvider) {
         self.nftModel = nftModel
+        self.dataProvider = dataProvider
     }
     
     private func presentCollectionViewData(authorName: String) {
@@ -55,8 +44,35 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         viewController?.renderViewData(viewData: viewData)
     }
     
-    func loadAuthorWebsite() {
-        let id = nftModel.author
+    func loadNFTs() {
+        var nftArray: [Nft] = []
+        let group = DispatchGroup()
+        
+        for nft in nftModel.nfts {
+            group.enter()
+            dataProvider.loadNFTsBy(id: nft) { result in
+                switch result {
+                case .success(let data):
+                    nftArray.append(data)
+                case .failure(let error):
+                    print(error)
+                }
+                group.leave()
+            }
+        }
+        group.wait()
+        group.notify(queue: .main) {
+            self.nftArray = nftArray
+            self.viewController?.reloadCollectionView()
+        }
+    }
+    
+    func loadAuthorWebsite() { }
+    
+    func toggleLikeStatus(model: Nft) {
+    }
+    
+    func toggleCartStatus(model: Nft) {
     }
 }
 
