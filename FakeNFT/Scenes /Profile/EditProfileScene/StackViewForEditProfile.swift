@@ -19,7 +19,7 @@ class StackViewForEditProfile: UIStackView {
     }()
     
     private let textView: UITextView = {
-       let textView = UITextView()
+        let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .ypLightGray
         textView.font = .sfProRegular17
@@ -50,7 +50,8 @@ class StackViewForEditProfile: UIStackView {
     }
     
     required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        assertionFailure("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     // MARK: Methods

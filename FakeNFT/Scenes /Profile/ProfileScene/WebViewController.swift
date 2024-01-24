@@ -47,7 +47,7 @@ final class WebViewController: UIViewController {
         let request = URLRequest(url: url)
         webView.load(request)
     }
-
+    
     @objc private func didTapBackButton() {
         webView.stopLoading()
         navigationController?.popViewController(animated: true)

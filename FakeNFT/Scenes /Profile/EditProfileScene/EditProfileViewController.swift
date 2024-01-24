@@ -38,7 +38,6 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
     private lazy var closeButton: UIButton = {
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let button = UIButton(type: UIButton.ButtonType.custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .ypBlack
         button.setImage(
             UIImage(systemName: Constants.closeButton, withConfiguration: config),
@@ -50,7 +49,6 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
     
     private lazy var avatarImage: UIImageView = {
         let image = UIImageView()
-        image.translatesAutoresizingMaskIntoConstraints = false
         image.clipsToBounds = true
         image.layer.cornerRadius = Constants.cornerRadius
         image.contentMode = .scaleAspectFill
@@ -85,7 +83,6 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
             labelText: Constants.nameLabelText,
             textContent: Constants.placeholdTextViewText
         )
-        name.translatesAutoresizingMaskIntoConstraints = false
         return name
     }()
     
@@ -94,7 +91,6 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
             labelText: Constants.descriptionLabelText,
             textContent: Constants.placeholdTextViewText
         )
-        descript.translatesAutoresizingMaskIntoConstraints = false
         return descript
     }()
     
@@ -103,7 +99,6 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
             labelText: Constants.webLinkLabelText,
             textContent: Constants.placeholdTextViewText
         )
-        web.translatesAutoresizingMaskIntoConstraints = false
         return web
     }()
     
@@ -121,7 +116,8 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        assertionFailure("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -161,7 +157,10 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
         view.addSubview(scrollView)
         avatarImage.addSubview(dimmingForAvatarImage)
         dimmingForAvatarImage.addSubview(labelForAvatarImage)
-        [closeButton, avatarImage, nameStack, descriptionStack, webLinkStack].forEach { scrollView.addSubview($0) }
+        [closeButton, avatarImage, nameStack, descriptionStack, webLinkStack].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            scrollView.addSubview($0)
+        }
     }
     
     private func applyConstraint() {

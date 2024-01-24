@@ -10,7 +10,6 @@ import Foundation
 struct ProfileUpdateRequest: NetworkRequest {
     
     let profileModel: ProfileModelEditing
-
     var endpoint: URL? {
         var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
         var components: [URLQueryItem] = []
@@ -30,7 +29,6 @@ struct ProfileUpdateRequest: NetworkRequest {
         urlComponents?.queryItems = components
         return urlComponents?.url
     }
-
     var httpMethod: HttpMethod {
         return .put
     }

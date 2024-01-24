@@ -23,9 +23,9 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.clipsToBounds = true
-        image.layer.cornerRadius = Constants.cornerRadius
+        image.layer.cornerRadius = UIConstants.cornerRadius
         image.contentMode = .scaleAspectFill
-        image.image = UIImage(systemName: Constants.avatarPlaceholdImage)
+        image.image = UIImage(systemName: UIConstants.avatarPlaceholdImage)
         return image
     }()
     
@@ -59,7 +59,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private lazy var editButton: UIBarButtonItem = {
         let config = UIImage.SymbolConfiguration(weight: .bold)
         let button = UIBarButtonItem(
-            image: UIImage(systemName: Constants.editButtonImage, withConfiguration: config),
+            image: UIImage(systemName: UIConstants.editButtonImage, withConfiguration: config),
             style: .plain,
             target: self,
             action: #selector(didTapEditButton)
@@ -70,7 +70,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private lazy var userStack: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = Constants.spacingForStack
+        stackView.spacing = UIConstants.spacingForStack
         stackView.axis = .horizontal
         return stackView
     }()
@@ -126,20 +126,20 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func applyConstraint() {
         NSLayoutConstraint.activate([
-            userStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.baseIndent),
-            userStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Constants.baseOffset),
-            userStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.baseOffset),
-            userStack.heightAnchor.constraint(equalToConstant: Constants.baseSize70),
-            avatarImage.heightAnchor.constraint(equalToConstant: Constants.baseSize70),
-            avatarImage.widthAnchor.constraint(equalToConstant: Constants.baseSize70),
-            descriptionLabel.topAnchor.constraint(equalTo: userStack.bottomAnchor, constant: Constants.baseIndent),
+            userStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: ConstraintConstants.baseIndent),
+            userStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: ConstraintConstants.baseOffset),
+            userStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -ConstraintConstants.baseOffset),
+            userStack.heightAnchor.constraint(equalToConstant: ConstraintConstants.baseSize70),
+            avatarImage.heightAnchor.constraint(equalToConstant: ConstraintConstants.baseSize70),
+            avatarImage.widthAnchor.constraint(equalToConstant: ConstraintConstants.baseSize70),
+            descriptionLabel.topAnchor.constraint(equalTo: userStack.bottomAnchor, constant: ConstraintConstants.baseIndent),
             descriptionLabel.leadingAnchor.constraint(equalTo: userStack.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: userStack.trailingAnchor),
-            webLinkLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constants.distance8),
+            webLinkLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: ConstraintConstants.distance8),
             webLinkLabel.leadingAnchor.constraint(equalTo: userStack.leadingAnchor),
             webLinkLabel.trailingAnchor.constraint(equalTo: userStack.trailingAnchor),
-            webLinkLabel.heightAnchor.constraint(equalToConstant: Constants.height28),
-            tableView.topAnchor.constraint(equalTo: webLinkLabel.bottomAnchor, constant: Constants.distance40),
+            webLinkLabel.heightAnchor.constraint(equalToConstant: ConstraintConstants.height28),
+            tableView.topAnchor.constraint(equalTo: webLinkLabel.bottomAnchor, constant: ConstraintConstants.distance40),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -184,7 +184,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
 // MARK: - Table View Data Source
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Constants.numberOfRowInSec
+        return TableViewConstants.numberOfRowInSec
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -194,11 +194,11 @@ extension ProfileViewController: UITableViewDataSource {
         var name = ""
         switch indexPath.row {
         case 0:
-            name = Constants.myNFT + Constants.bracket1st + String(nftsCount) + Constants.bracket2nd
+            name = TableViewConstants.myNFT + TableViewConstants.bracket1st + String(nftsCount) + TableViewConstants.bracket2nd
         case 1:
-            name = Constants.myFavorite + Constants.bracket1st + String(likesCount) + Constants.bracket2nd
+            name = TableViewConstants.myFavorite + TableViewConstants.bracket1st + String(likesCount) + TableViewConstants.bracket2nd
         case 2:
-            name = Constants.about
+            name = TableViewConstants.about
         default:
             break
         }
@@ -210,7 +210,7 @@ extension ProfileViewController: UITableViewDataSource {
 // MARK: - Table View Delegate
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constants.cellHeight
+        return TableViewConstants.cellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -241,7 +241,7 @@ extension ProfileViewController: ProfileViewControllerDelegate {
     
     func update() {
         guard let profileModel = presenter.model else { return }
-        ImageCache.default.retrieveImage(forKey: Constants.avatarKey, options: nil) { [weak self] result in
+        ImageCache.default.retrieveImage(forKey: UIConstants.avatarKey, options: nil) { [weak self] result in
             switch result {
             case .success(let cache):
                 if let cacheImage = cache.image {
@@ -249,7 +249,7 @@ extension ProfileViewController: ProfileViewControllerDelegate {
                     self?.onImageLoaded?(cacheImage)
                 } else {
                     if let avatar = profileModel.avatar {
-                        let proc = RoundCornerImageProcessor(cornerRadius: Constants.cornerRadius)
+                        let proc = RoundCornerImageProcessor(cornerRadius: UIConstants.cornerRadius)
                         self?.avatarImage.kf.indicatorType = .activity
                         self?.avatarImage.kf.setImage(with: URL(string: avatar), options: [.processor(proc)])
                     }
@@ -303,14 +303,14 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
     func didUpdateAvatar(_ newAvatar: UIImage) {
         self.avatarImage.image = newAvatar
         let cache = ImageCache.default
-        cache.store(newAvatar, forKey: Constants.avatarKey)
+        cache.store(newAvatar, forKey: UIConstants.avatarKey)
         self.currentAvatar = newAvatar
     }
 }
 
 // MARK: - Constants
 private extension ProfileViewController {
-    struct Constants {
+    enum TableViewConstants {
         // Table cell
         static let myNFT = "Мой NFT "
         static let myFavorite = "Избранные NFT "
@@ -319,14 +319,29 @@ private extension ProfileViewController {
         static let bracket2nd = ")"
         static let cellHeight: CGFloat = 54
         static let numberOfRowInSec = 3
-        // Constraint
+//        // Constraint
+//        static let baseOffset: CGFloat = 16
+//        static let baseSize70: CGFloat = 70
+//        static let baseIndent: CGFloat = 20
+//        static let height28: CGFloat = 28
+//        static let distance8: CGFloat = 8
+//        static let distance40: CGFloat = 40
+//        // UI helper
+//        static let avatarKey = "avatarImage"
+//        static let editButtonImage = "square.and.pencil"
+//        static let avatarPlaceholdImage = "person.circle"
+//        static let cornerRadius: CGFloat = 35
+//        static let spacingForStack: CGFloat = 16
+    }
+    enum ConstraintConstants {
         static let baseOffset: CGFloat = 16
         static let baseSize70: CGFloat = 70
         static let baseIndent: CGFloat = 20
         static let height28: CGFloat = 28
         static let distance8: CGFloat = 8
         static let distance40: CGFloat = 40
-        // UI helper
+    }
+    enum UIConstants {
         static let avatarKey = "avatarImage"
         static let editButtonImage = "square.and.pencil"
         static let avatarPlaceholdImage = "person.circle"

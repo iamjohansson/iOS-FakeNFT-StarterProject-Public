@@ -34,7 +34,6 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
                 self?.saveInModel(profileModel: profile)
             case .failure(let error):
                 self?.delegate?.showError(error: error)
-
             }
         }
     }
@@ -56,5 +55,4 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             }
         }
     }
-    
 }
