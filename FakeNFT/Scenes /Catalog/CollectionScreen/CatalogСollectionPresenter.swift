@@ -67,12 +67,22 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         }
     }
     
-    func loadAuthorWebsite() { }
+    func loadAuthorWebsite() {
+    }
     
     func toggleLikeStatus(model: Nft) {
+        dataProvider.getUserProfile { [weak self] profileModel in
+            let isLiked = profileModel.likes?.contains { $0 == model.id }
+            var updatedProfileModel = profileModel
+            if isLiked ?? false {
+                updatedProfileModel.likes?.removeAll { $0 == model.id }
+            } else {
+                updatedProfileModel.likes?.append(model.id)
+            }
+            self?.dataProvider.updateUserProfile(with: updatedProfileModel)
+        }
     }
     
-    func toggleCartStatus(model: Nft) {
-    }
+    func toggleCartStatus(model: Nft) { }
 }
 

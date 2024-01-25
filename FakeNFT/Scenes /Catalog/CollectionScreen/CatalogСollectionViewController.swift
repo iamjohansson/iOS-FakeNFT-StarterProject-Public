@@ -19,6 +19,7 @@ protocol CatalogСollectionViewControllerProtocol: AnyObject {
 
 final class CatalogСollectionViewController: UIViewController {
     
+    private var presenter: CatalogСollectionPresenterProtocol
     private var heightConstraintCV = NSLayoutConstraint()
     
     private let itemsPerRow = 3
@@ -90,6 +91,16 @@ final class CatalogСollectionViewController: UIViewController {
         collection.register(NFTCollectionCell.self)
         return collection
     }()
+    
+    init(presenter: CatalogСollectionPresenterProtocol) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        assertionFailure("init(coder:) has not been implemented")
+        return nil
+    }
     
     override func viewDidLoad() {
         setupConstraints()
@@ -189,13 +200,19 @@ final class CatalogСollectionViewController: UIViewController {
 
 extension CatalogСollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        <#code#>
+        let itemCount = presenter.nftArray.count
+        calculateCollectionHeight(itemCount: itemCount)
+        return itemCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let cell: NFTCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        let data = presenter.nftArray[indexPath.row]
+        cell.nftModel = data
+        cell.delegate = self
+        cell.renderCellForModel()
+        return cell
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         CGSize(width: 108, height: 172)
@@ -214,10 +231,14 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
 
 extension CatalogСollectionViewController: NFTCollectionCellDelegate {
     func onLikeButtonTapped(cell: NFTCollectionCell) {
+        guard let nftModel = cell.nftModel else { return }
+        presenter.toggleLikeStatus(model: nftModel)
     }
     
     
     func addToCartButtonTapped(cell: NFTCollectionCell) {
+        guard let nftModel = cell.nftModel else { return }
+        presenter.toggleCartStatus(model: nftModel)
     }
 }
 

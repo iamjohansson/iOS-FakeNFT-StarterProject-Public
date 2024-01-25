@@ -12,6 +12,8 @@ import ProgressHUD
 
 protocol  CollectionDataProviderProtocol: AnyObject {
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void)
+    func updateUserProfile (with profile: ProfileModel)
+    func getUserProfile(completion: @escaping (ProfileModel) -> Void)
 }
 
 // MARK: - final class
@@ -19,6 +21,7 @@ protocol  CollectionDataProviderProtocol: AnyObject {
 final class CollectionDataProvider: CollectionDataProviderProtocol {
     
     let networkClient: DefaultNetworkClient
+    var profile: ProfileModel?
     
     init(networkClient: DefaultNetworkClient) {
         self.networkClient = networkClient
@@ -31,4 +34,19 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         }
         ProgressHUD.dismiss()
     }
+    
+    func updateUserProfile(with profile: ProfileModel) {
+        let updateRequest = ProfileUpdateRequest(profileModel: profile)
+        
+        networkClient.send(request: updateRequest) { result in
+            switch result {
+            case .success(let data):
+                print(data)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getUserProfile(completion: @escaping (ProfileModel) -> Void) { }
 }
