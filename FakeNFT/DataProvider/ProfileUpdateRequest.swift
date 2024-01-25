@@ -8,7 +8,7 @@
 import Foundation
 
 struct ProfileUpdateRequest: NetworkRequest {
-
+    
     let profileModel: ProfileModel
     
     var endpoint: URL? {

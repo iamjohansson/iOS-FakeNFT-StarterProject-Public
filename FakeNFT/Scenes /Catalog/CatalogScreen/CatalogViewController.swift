@@ -134,4 +134,14 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         187
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let nftModel = presenter.getDataSource()[indexPath.row]
+        let dataProvider = CollectionDataProvider(networkClient: DefaultNetworkClient())
+        let presenter = CatalogСollectionPresenter(nftModel: nftModel, dataProvider: dataProvider)
+        let viewController = CatalogСollectionViewController(presenter: presenter)
+        viewController.hidesBottomBarWhenPushed = true
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
