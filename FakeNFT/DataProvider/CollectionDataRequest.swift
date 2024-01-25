@@ -8,6 +8,7 @@
 import Foundation
 
 struct CollectionDataRequest: NetworkRequest {
+    
     var endpoint: URL?
 
     init(id: String) {

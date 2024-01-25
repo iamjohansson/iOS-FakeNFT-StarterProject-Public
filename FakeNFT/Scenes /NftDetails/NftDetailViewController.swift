@@ -45,7 +45,8 @@ final class NftDetailViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        assertionFailure("init(coder:) has not been implemented")
+        return nil
     }
 
     // MARK: - Functions

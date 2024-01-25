@@ -256,7 +256,6 @@ extension CatalogСollectionViewController: NFTCollectionCellDelegate {
 
 extension CatalogСollectionViewController: CatalogСollectionViewControllerProtocol {
     func renderViewData(viewData: CatalogCollectionViewData) {
-        print(11, viewData)
         DispatchQueue.main.async {
             self.loadCoverImage(url: viewData.coverImageURL)
             self.titleLabel.text = viewData.title
@@ -267,7 +266,6 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
     
     private func loadCoverImage(url : String) {
         guard let imageUrl = URL(string: url.urlDecoder) else {
-            print("Invalid URL: \(url)")
             return
         }
         coverImageView.kf.setImage(with: imageUrl)

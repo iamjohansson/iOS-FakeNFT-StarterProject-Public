@@ -19,11 +19,16 @@ struct ProfileUpdateRequest: NetworkRequest {
             let likesString = likes.joined(separator: ",")
             components.append(URLQueryItem(name: "likes", value: likesString))
         }
+
         urlComponents?.queryItems = components
         return urlComponents?.url
     }
     var httpMethod: HttpMethod {
         return .put
+    }
+    
+    var isUrlEncoded: Bool? {
+        return true
     }
     
     var dto: Encodable?

@@ -36,7 +36,6 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     }
     
     internal func presentCollectionViewData() {
-        print(nftModel.nfts)
         let viewData = CatalogCollectionViewData(
             coverImageURL: nftModel.cover,
             title: nftModel.name,
@@ -69,18 +68,35 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     }
     
     func toggleLikeStatus(model: Nft) {
-        dataProvider.getUserProfile { [weak self] profileModel in
-            let isLiked = profileModel.likes?.contains { $0 == model.id }
-            var updatedProfileModel = profileModel
-            if isLiked ?? false {
-                updatedProfileModel.likes?.removeAll { $0 == model.id }
-            } else {
-                updatedProfileModel.likes?.append(model.id)
+        dataProvider.getUserProfile { [weak self] result in
+            switch result {
+            case .success(let profileModel):
+                var updatedProfileModel = profileModel
+                let isLiked = updatedProfileModel.likes?.contains { $0 == model.id } ?? false
+                
+                if isLiked {
+                    updatedProfileModel.likes?.removeAll { $0 == model.id }
+                } else {
+                    updatedProfileModel.likes?.append(model.id)
+                }
+                
+                self?.dataProvider.updateUserProfile(with: updatedProfileModel) { updateResult in
+                    switch updateResult {
+                    case .success(let result):
+                        // TODO: Profile updated successfully and save likes
+                        print("Profile updated successfully: ", result)
+                    case .failure(let error):
+                        // TODO: Handle the error if needed
+                        print("Error updating profile: \(error)")
+                    }
+                }
+                
+            case .failure(let error):
+                // TODO: Handle the error if needed
+                print("Error getting user profile: \(error)")
             }
-            self?.dataProvider.updateUserProfile(with: updatedProfileModel)
         }
     }
     
     func toggleCartStatus(model: Nft) { }
 }
-

@@ -14,13 +14,14 @@ protocol  CollectionDataProviderProtocol: AnyObject {
     func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void)
     func getCollectionData() -> NFTCollection
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void)
-    func updateUserProfile (with profile: ProfileModel)
-    func getUserProfile(completion: @escaping (ProfileModel) -> Void)
+    func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<Data, Error>) -> Void)
+    func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
 }
 
 // MARK: - final class
 
 final class CollectionDataProvider: CollectionDataProviderProtocol {
+    
     private var collectionData: NFTCollection? //TODO: default value
     let networkClient: DefaultNetworkClient
     var profile: ProfileModel?
@@ -47,7 +48,7 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
             ProgressHUD.dismiss()
         }
     }
-
+    
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void) {
         ProgressHUD.show()
         networkClient.send(request: NFTGetRequest(id: id), type: Nft.self)  { result in
@@ -56,26 +57,26 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         ProgressHUD.dismiss()
     }
     
-    func updateUserProfile(with profile: ProfileModel) {
+    func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<Data, Error>) -> Void) {
         let updateRequest = ProfileUpdateRequest(profileModel: profile)
         
         networkClient.send(request: updateRequest) { result in
             switch result {
             case .success(let data):
-                print(data)
+                completion(.success(data))
             case .failure(let error):
-                print("updateUserProfileError: ", error)
+                completion(.failure(error))
             }
         }
     }
     
-    func getUserProfile(completion: @escaping (ProfileModel) -> Void) {
+    func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         networkClient.send(request: ProfileGetRequest(), type: ProfileModel.self) { result in
             switch result {
             case .success(let data):
-                completion(data)
+                completion(.success(data))
             case .failure(let error):
-                print("getUserProfileError: ", error)
+                completion(.failure(error))
             }
         }
     }
