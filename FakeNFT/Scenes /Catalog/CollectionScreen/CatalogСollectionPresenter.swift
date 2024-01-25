@@ -14,7 +14,7 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
     var userURL: String? { get }
     var nftArray: [Nft] { get }
     func loadNFTs()
-    func loadAuthorWebsite()
+    func presentCollectionViewData()
     func toggleLikeStatus(model: Nft)
     func toggleCartStatus(model: Nft)
 }
@@ -35,12 +35,13 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         self.dataProvider = dataProvider
     }
     
-    private func presentCollectionViewData(authorName: String) {
+    internal func presentCollectionViewData() {
+        print(nftModel.nfts)
         let viewData = CatalogCollectionViewData(
             coverImageURL: nftModel.cover,
             title: nftModel.name,
             description: nftModel.description,
-            authorName: authorName)
+            authorName: nftModel.author)
         viewController?.renderViewData(viewData: viewData)
     }
     
@@ -55,7 +56,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 case .success(let data):
                     nftArray.append(data)
                 case .failure(let error):
-                    print(error)
+                    print("loadNFTsError: ", error)
                 }
                 group.leave()
             }
@@ -65,9 +66,6 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             self.nftArray = nftArray
             self.viewController?.reloadCollectionView()
         }
-    }
-    
-    func loadAuthorWebsite() {
     }
     
     func toggleLikeStatus(model: Nft) {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import ProgressHUD
 
 // MARK: - Protocol
@@ -103,8 +104,11 @@ final class CatalogСollectionViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        presenter.viewController = self
         setupConstraints()
         setupNavBackButton()
+        presenter.presentCollectionViewData()
+        presenter.loadNFTs()
     }
     
     private func setupConstraints() {
@@ -113,8 +117,14 @@ final class CatalogСollectionViewController: UIViewController {
         
         scrollView.addSubview(contentView)
         
-        [coverImageView, titleLabel, authorLabel, authorLink,
-         collectionDescriptionLabel, nftCollection].forEach {
+        [
+            coverImageView,
+            titleLabel,
+            authorLabel,
+            authorLink,
+            collectionDescriptionLabel,
+            nftCollection
+        ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
             contentView.backgroundColor = .ypWhite
@@ -156,6 +166,7 @@ final class CatalogСollectionViewController: UIViewController {
             authorLink.leadingAnchor.constraint(equalTo: authorLabel.trailingAnchor, constant: 4),
             authorLink.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 16),
             authorLink.bottomAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 1),
+            authorLink.heightAnchor.constraint(equalToConstant: 28),
             
             collectionDescriptionLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 5),
             collectionDescriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -192,8 +203,7 @@ final class CatalogСollectionViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func launchWebsiteViewer() {
-    }
+    @objc func launchWebsiteViewer() { }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
@@ -246,21 +256,24 @@ extension CatalogСollectionViewController: NFTCollectionCellDelegate {
 
 extension CatalogСollectionViewController: CatalogСollectionViewControllerProtocol {
     func renderViewData(viewData: CatalogCollectionViewData) {
+        print(11, viewData)
         DispatchQueue.main.async {
             self.loadCoverImage(url: viewData.coverImageURL)
             self.titleLabel.text = viewData.title
             self.authorLink.text = viewData.authorName
-            self.collectionDescriptionLabel.text = viewData.description}
+            self.collectionDescriptionLabel.text = viewData.description
+        }
     }
     
     private func loadCoverImage(url : String) {
-        let url = URL(string: url.urlEncoder)
-        coverImageView.kf.setImage(with: url)
-        
+        guard let imageUrl = URL(string: url.urlDecoder) else {
+            print("Invalid URL: \(url)")
+            return
+        }
+        coverImageView.kf.setImage(with: imageUrl)
     }
     
     func reloadCollectionView() {
         nftCollection.reloadData()
     }
 }
-

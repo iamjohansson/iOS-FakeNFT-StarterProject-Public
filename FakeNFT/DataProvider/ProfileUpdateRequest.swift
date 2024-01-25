@@ -14,7 +14,7 @@ struct ProfileUpdateRequest: NetworkRequest {
     var endpoint: URL? {
         var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
         var components: [URLQueryItem] = []
-        //TODO: nfts
+        
         if let likes = profileModel.likes {
             let likesString = likes.joined(separator: ",")
             components.append(URLQueryItem(name: "likes", value: likesString))

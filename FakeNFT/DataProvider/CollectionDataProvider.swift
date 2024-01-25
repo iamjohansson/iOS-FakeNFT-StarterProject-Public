@@ -11,6 +11,8 @@ import ProgressHUD
 // MARK: - Protocol
 
 protocol  CollectionDataProviderProtocol: AnyObject {
+    func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void)
+    func getCollectionData() -> NFTCollection
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void)
     func updateUserProfile (with profile: ProfileModel)
     func getUserProfile(completion: @escaping (ProfileModel) -> Void)
@@ -19,7 +21,7 @@ protocol  CollectionDataProviderProtocol: AnyObject {
 // MARK: - final class
 
 final class CollectionDataProvider: CollectionDataProviderProtocol {
-    
+    private var collectionData: NFTCollection? //TODO: default value
     let networkClient: DefaultNetworkClient
     var profile: ProfileModel?
     
@@ -27,6 +29,25 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         self.networkClient = networkClient
     }
     
+    func getCollectionData() -> NFTCollection {
+        return self.collectionData! //TODO: remove unwrap after giving default value above
+    }
+    
+    func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void) {
+        ProgressHUD.show()
+        networkClient.send(request: CollectionDataRequest(id: id), type: NFTCollection.self) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let data):
+                self.collectionData = data
+                completion(data)
+            case .failure(_):
+                break
+            }
+            ProgressHUD.dismiss()
+        }
+    }
+
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void) {
         ProgressHUD.show()
         networkClient.send(request: NFTGetRequest(id: id), type: Nft.self)  { result in
@@ -43,10 +64,19 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
             case .success(let data):
                 print(data)
             case .failure(let error):
-                print(error)
+                print("updateUserProfileError: ", error)
             }
         }
     }
     
-    func getUserProfile(completion: @escaping (ProfileModel) -> Void) { }
+    func getUserProfile(completion: @escaping (ProfileModel) -> Void) {
+        networkClient.send(request: ProfileGetRequest(), type: ProfileModel.self) { result in
+            switch result {
+            case .success(let data):
+                completion(data)
+            case .failure(let error):
+                print("getUserProfileError: ", error)
+            }
+        }
+    }
 }

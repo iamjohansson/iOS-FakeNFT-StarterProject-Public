@@ -102,15 +102,16 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
             nftImage.heightAnchor.constraint(equalToConstant: 108),
             
             // LikeButton
-            likeButton.topAnchor.constraint(equalTo: nftImage.topAnchor, constant: 12),
-            likeButton.trailingAnchor.constraint(equalTo: nftImage.trailingAnchor, constant: -12),
-            likeButton.widthAnchor.constraint(equalToConstant: 26),
-            likeButton.heightAnchor.constraint(equalToConstant: 22),
+            likeButton.topAnchor.constraint(equalTo: nftImage.topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: nftImage.trailingAnchor),
+            likeButton.widthAnchor.constraint(equalToConstant: 42),
+            likeButton.heightAnchor.constraint(equalToConstant: 42),
             
             // ratingStarsView
             ratingStarsView.topAnchor.constraint(equalTo: nftImage.bottomAnchor, constant: 8),
             ratingStarsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            ratingStarsView.widthAnchor.constraint(equalToConstant: 70),
+            ratingStarsView.heightAnchor.constraint(equalToConstant: 12),
+            ratingStarsView.widthAnchor.constraint(equalToConstant: 68),
             
             nftNameAndPriceView.topAnchor.constraint(equalTo: ratingStarsView.bottomAnchor, constant: 4),
             nftNameAndPriceView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -130,7 +131,9 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
             // Cart
             cartButton.centerYAnchor.constraint(equalTo: nftNameAndPriceView.centerYAnchor),
             cartButton.leadingAnchor.constraint(greaterThanOrEqualTo: nftNameAndPriceView.trailingAnchor),
-            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12)
+            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cartButton.heightAnchor.constraint(equalToConstant: 40),
+            cartButton.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
     
