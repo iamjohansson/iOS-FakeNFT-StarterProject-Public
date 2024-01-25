@@ -62,7 +62,6 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
         presenter.viewController = self
         loadNFTCollections()
         view.backgroundColor = .ypWhite
-        self.collectionsRefreshControl.endRefreshing()
     }
     
     private func setupNavigationBar() {
@@ -74,6 +73,7 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
     private func setupConstraints() {
         
         view.addSubview(tableView)
+        tableView.refreshControl = collectionsRefreshControl
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -86,6 +86,7 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
     func reloadTableView() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            self.collectionsRefreshControl.endRefreshing()
         }
     }
     
