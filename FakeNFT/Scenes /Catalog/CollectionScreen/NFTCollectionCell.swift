@@ -17,8 +17,8 @@ protocol NFTCollectionCellDelegate: AnyObject {
 
 final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
-    var nftModel: Nft? //TODO: private
-    var profileModel: ProfileModel? //TODO: private
+    var nftModel: Nft?
+    var profileModel: ProfileModel?
     
     private var likedByUser: Bool = false
     private var itemInCart: Bool = false

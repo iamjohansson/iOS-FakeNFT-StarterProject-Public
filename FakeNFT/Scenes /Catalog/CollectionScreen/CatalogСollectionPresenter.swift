@@ -83,7 +83,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 self?.dataProvider.updateUserProfile(with: updatedProfileModel) { updateResult in
                     switch updateResult {
                     case .success(let result):
-                        // TODO: Profile updated successfully and save likes
+                        // TODO: Profile updated successfully and (save likes?)
                         print("Profile updated successfully: ", result)
                     case .failure(let error):
                         // TODO: Handle the error if needed
@@ -92,11 +92,20 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 }
                 
             case .failure(let error):
-                // TODO: Handle the error if needed
                 print("Error getting user profile: \(error)")
             }
         }
     }
     
-    func toggleCartStatus(model: Nft) { }
+    func toggleCartStatus(model: Nft) {
+//        let itemInCart = cartController.cart.contains(where: { $0.id == model.id })
+//        if itemInCart {
+//            cartController.removeFromCart(model.id) {
+//                print("Removed from cart")}
+//        } else {
+//            cartController.addToCart(model) {
+//                print("Added to cart")
+//            }
+//        }
+    }
 }
