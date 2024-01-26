@@ -218,7 +218,7 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NFTCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         let data = presenter.nftArray[indexPath.row]
-        cell.nftModel = data
+        cell.setNftModel(data)
         cell.delegate = self
         cell.renderCellForModel()
         return cell
@@ -241,13 +241,13 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
 
 extension CatalogСollectionViewController: NFTCollectionCellDelegate {
     func onLikeButtonTapped(cell: NFTCollectionCell) {
-        guard let nftModel = cell.nftModel else { return }
+        guard let nftModel = cell.getNftModel() else { return }
         presenter.toggleLikeStatus(model: nftModel)
     }
     
     
     func addToCartButtonTapped(cell: NFTCollectionCell) {
-        guard let nftModel = cell.nftModel else { return }
+        guard let nftModel = cell.getNftModel() else { return }
         presenter.toggleCartStatus(model: nftModel)
     }
 }

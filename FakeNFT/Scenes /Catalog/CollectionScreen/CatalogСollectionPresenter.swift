@@ -25,14 +25,16 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     weak var viewController: CatalogСollectionViewControllerProtocol?
     private var dataProvider: CollectionDataProvider
     
+    let cartController: CartControllerProtocol
     let nftModel: NFTCollection
     var userURL: String?
     var nftArray: [Nft] = []
     var profileModel: [ProfileModel] = []
     
-    init(nftModel: NFTCollection, dataProvider: CollectionDataProvider) {
+    init(nftModel: NFTCollection, dataProvider: CollectionDataProvider, cartController: CartControllerProtocol) {
         self.nftModel = nftModel
         self.dataProvider = dataProvider
+        self.cartController = cartController
     }
     
     internal func presentCollectionViewData() {
@@ -98,14 +100,14 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     }
     
     func toggleCartStatus(model: Nft) {
-//        let itemInCart = cartController.cart.contains(where: { $0.id == model.id })
-//        if itemInCart {
-//            cartController.removeFromCart(model.id) {
-//                print("Removed from cart")}
-//        } else {
-//            cartController.addToCart(model) {
-//                print("Added to cart")
-//            }
-//        }
+        let itemInCart = cartController.cart.contains(where: { $0.id == model.id })
+        if itemInCart {
+            cartController.removeFromCart(model.id) {
+                print("Removed from cart")}
+        } else {
+            cartController.addToCart(model) {
+                print("Added to cart")
+            }
+        }
     }
 }

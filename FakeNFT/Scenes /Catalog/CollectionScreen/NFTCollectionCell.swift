@@ -17,15 +17,15 @@ protocol NFTCollectionCellDelegate: AnyObject {
 
 final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
-    var nftModel: Nft?
-    var profileModel: ProfileModel?
+    private var nftModel: Nft?
+    private var profileModel: ProfileModel?
     
     private var likedByUser: Bool = false
     private var itemInCart: Bool = false
     
     weak var delegate: NFTCollectionCellDelegate?
     
-    lazy var nftImage: UIImageView = {
+    private lazy var nftImage: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 12
@@ -34,7 +34,7 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         return imageView
     }()
     
-    lazy var likeButton: UIButton = {
+    private lazy var likeButton: UIButton = {
         let button = UIButton()
         button.imageView?.tintColor = .ypRedUn
         button.addTarget(self, action: #selector(userDidLike), for: .touchUpInside)
@@ -43,31 +43,31 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         return button
     }()
     
-    lazy var cartButton: UIButton = {
+    private lazy var cartButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "addToCart"), for: .normal)
         button.addTarget(self, action: #selector(cartItemAdded), for: .touchUpInside)
         return button
     }()
     
-    lazy var ratingStarsView: DynamicRatingView = {
+    private lazy var ratingStarsView: DynamicRatingView = {
         let view = DynamicRatingView()
         return view
     }()
     
-    lazy var nftNameAndPriceView: UIView = {
+    private lazy var nftNameAndPriceView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var nftName: UILabel = {
+    private lazy var nftName: UILabel = {
         let label = UILabel()
         label.text = "nftName"
         label.font = .sfProBold17
         return label
     }()
     
-    lazy var nftPrice: UILabel = {
+    private lazy var nftPrice: UILabel = {
         let label = UILabel()
         label.text = "1 ETH"
         label.font = .sfProLight10
@@ -138,6 +138,18 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         ])
     }
     
+    func setNftModel(_ model: Nft?) {
+        nftModel = model
+    }
+    
+    func getNftModel() -> Nft? {
+        return nftModel
+    }
+    
+    func getProfileModel() -> ProfileModel? {
+        return profileModel
+    }
+    
     func renderCellForModel() {
         guard let nftModel = nftModel else { return }
         
@@ -150,24 +162,16 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         ratingStarsView.configureRating(nftModel.rating)
     }
     
-    private func configureLikeButtonImage() {
-        if likedByUser {
-            likedByUser = false
-            likeButton.setImage(UIImage(named: "likeNotActive"), for: .normal)
-        } else {
-            likedByUser = true
-            likeButton.setImage(UIImage(named: "likeActive"), for: .normal)
-        }
+    internal func configureLikeButtonImage() {
+        likedByUser.toggle()
+        let likeName = likedByUser ? "likeActive" : "likeNotActive"
+        likeButton.setImage(UIImage(named: likeName), for: .normal)
     }
     
-    private func configureCartButtonImage() {
-        if itemInCart {
-            itemInCart = false
-            cartButton.setImage(UIImage(named: "addToCart"), for: .normal)
-        } else {
-            itemInCart = true
-            cartButton.setImage(UIImage(named: "deleteFromCart"), for: .normal)
-        }
+    internal func configureCartButtonImage() {
+        itemInCart.toggle()
+        let cartImage = itemInCart ? "addToCart" : "deleteFromCart"
+        cartButton.setImage(UIImage(named: cartImage), for: .normal)
     }
     
     // MARK: - @objc func

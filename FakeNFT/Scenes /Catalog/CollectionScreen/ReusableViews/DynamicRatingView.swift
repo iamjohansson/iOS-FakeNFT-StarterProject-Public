@@ -23,12 +23,8 @@ final class DynamicRatingView: UIStackView {
     }
     
     func configureRating(_ rating: Int) {
-        for (index, imageView) in starsImageView.enumerated() {
-            if index < rating {
-                imageView.tintColor = .ypYellowUn
-            } else {
-                imageView.tintColor = .ypLightGray
-            }
+        starsImageView.enumerated().forEach { index, imageView in
+            imageView.tintColor = index < rating ? .ypYellowUn : .ypLightGray
         }
     }
     
