@@ -22,7 +22,7 @@ final class ProfileCell: UITableViewCell {
     }()
     
     private lazy var chevronImage: UIImageView = {
-       let image = UIImageView()
+        let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image =  UIImage(
             systemName: "chevron.right",

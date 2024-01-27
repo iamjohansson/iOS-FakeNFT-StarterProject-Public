@@ -9,7 +9,7 @@ import Foundation
 
 protocol ProfileViewPresenterProtocol {
     var delegate: ProfileViewControllerDelegate? { get set }
-    var model: ProfileUIModel? { get }
+    var model: ProfileModel? { get }
     var profileService: ProfileServiceProtocol { get }
     func getProfile()
     func saveInModel(profileModel: ProfileModel)
@@ -18,30 +18,29 @@ protocol ProfileViewPresenterProtocol {
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     
     internal weak var delegate: ProfileViewControllerDelegate?
-    private (set) var model: ProfileUIModel? = nil
     internal var profileService: ProfileServiceProtocol
+    private (set) var model: ProfileModel? = nil
     
     init(profileService: ProfileServiceProtocol) {
         self.profileService = profileService
     }
     
     func getProfile() {
-        delegate?.showLoading()
+        self.delegate?.showLoading()
         profileService.loadProfile() { [weak self] result in
             switch result {
             case .success(let profile):
                 self?.delegate?.hideLoading()
                 self?.saveInModel(profileModel: profile)
             case .failure(let error):
-                self?.delegate?.hideLoading()
-                self?.delegate?.showDescriptionAlert(title: "Ошибка сетевого запроса", message: error.localizedDescription)
+                self?.delegate?.showError(error: error)
             }
         }
     }
     
     func saveInModel(profileModel: ProfileModel) {
         DispatchQueue.global(qos: .utility).async { [weak self] in
-            let profileUIModel = ProfileUIModel(
+            let profileUIModel = ProfileModel(
                 name: profileModel.name,
                 avatar: profileModel.avatar,
                 description: profileModel.description,
@@ -56,5 +55,4 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             }
         }
     }
-    
 }
