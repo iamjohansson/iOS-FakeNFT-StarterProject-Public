@@ -311,7 +311,6 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
 // MARK: - Constants
 private extension ProfileViewController {
     enum TableViewConstants {
-        // Table cell
         static let myNFT = "Мой NFT "
         static let myFavorite = "Избранные NFT "
         static let about = "О разработчике"
@@ -319,19 +318,6 @@ private extension ProfileViewController {
         static let bracket2nd = ")"
         static let cellHeight: CGFloat = 54
         static let numberOfRowInSec = 3
-//        // Constraint
-//        static let baseOffset: CGFloat = 16
-//        static let baseSize70: CGFloat = 70
-//        static let baseIndent: CGFloat = 20
-//        static let height28: CGFloat = 28
-//        static let distance8: CGFloat = 8
-//        static let distance40: CGFloat = 40
-//        // UI helper
-//        static let avatarKey = "avatarImage"
-//        static let editButtonImage = "square.and.pencil"
-//        static let avatarPlaceholdImage = "person.circle"
-//        static let cornerRadius: CGFloat = 35
-//        static let spacingForStack: CGFloat = 16
     }
     enum ConstraintConstants {
         static let baseOffset: CGFloat = 16
