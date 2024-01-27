@@ -160,24 +160,30 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         nftName.text = nftModel.name
         nftPrice.text = "\(nftModel.price) ETH"
         ratingStarsView.configureRating(nftModel.rating)
-        
-        likedByUser = UserDefaults.standard.bool(forKey: "LikedStatus_\(nftModel.id)")
-        configureLikeButtonImage()
     }
     
-    internal func configureLikeButtonImage() {
+    private func configureLikeButtonImage() {
         likedByUser.toggle()
         let likeName = likedByUser ? "likeActive" : "likeNotActive"
         likeButton.setImage(UIImage(named: likeName), for: .normal)
-        
-        guard let nftId = nftModel?.id else { return }
-        UserDefaults.standard.set(likedByUser, forKey: "LikedStatus_\(nftId)")
     }
     
-    internal func configureCartButtonImage() {
+    private func togglelikedByUser() {
+        likedByUser.toggle()
+    }
+    
+    private func configureCartButtonImage() {
         itemInCart.toggle()
         let cartImage = itemInCart ? "addToCart" : "deleteFromCart"
         cartButton.setImage(UIImage(named: cartImage), for: .normal)
+    }
+    
+    func updateLikeButtonImage() {
+           configureLikeButtonImage()
+       }
+    
+    func updateCartButton() {
+        configureCartButtonImage()
     }
     
     // MARK: - @objc func

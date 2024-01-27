@@ -37,7 +37,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         self.cartController = cartController
     }
     
-    internal func presentCollectionViewData() {
+    func presentCollectionViewData() {
         let viewData = CatalogCollectionViewData(
             coverImageURL: nftModel.cover,
             title: nftModel.name,
@@ -73,15 +73,12 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         dataProvider.getUserProfile { [weak self] result in
             switch result {
             case .success(let profileModel):
-                var updatedProfileModel = profileModel
-                let isLiked = updatedProfileModel.likes?.contains { $0 == model.id } ?? false
+                let updatedLikes = profileModel.likes?.contains { $0 == model.id } == true ?
+                                   profileModel.likes?.filter { $0 != model.id } :
+                                   (profileModel.likes ?? []) + [model.id]
                 
-                if isLiked {
-                    updatedProfileModel.likes?.removeAll { $0 == model.id }
-                } else {
-                    updatedProfileModel.likes?.append(model.id)
-                }
-                
+                let updatedProfileModel = profileModel.update(newLikes: updatedLikes)
+
                 self?.dataProvider.updateUserProfile(with: updatedProfileModel) { updateResult in
                     switch updateResult {
                     case .success(let result):
@@ -103,10 +100,11 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         let itemInCart = cartController.cart.contains(where: { $0.id == model.id })
         if itemInCart {
             cartController.removeFromCart(model.id) {
-                print("Removed from cart")}
+                // TODO: Handle item removal from cart
+            }
         } else {
             cartController.addToCart(model) {
-                print("Added to cart")
+                // TODO: Handle item addition to cart
             }
         }
     }

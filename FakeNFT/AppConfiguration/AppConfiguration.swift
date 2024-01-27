@@ -9,8 +9,8 @@ import UIKit
 
 final class AppConfiguration {
     let catalogViewController: UIViewController
-    let catalogNavigationController: UINavigationController
-    var cartService: CartControllerProtocol
+    private let catalogNavigationController: UINavigationController
+    private let cartService: CartControllerProtocol
     
     init() {
         let networkClient = DefaultNetworkClient()

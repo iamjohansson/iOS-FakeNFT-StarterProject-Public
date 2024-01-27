@@ -16,8 +16,9 @@ struct ProfileUpdateRequest: NetworkRequest {
         var components: [URLQueryItem] = []
         
         if let likes = profileModel.likes {
-            let likesString = likes.joined(separator: ",")
-            components.append(URLQueryItem(name: "likes", value: likesString))
+            for like in likes {
+                components.append(URLQueryItem(name: "likes", value: like))
+            }
         }
 
         urlComponents?.queryItems = components
@@ -27,7 +28,7 @@ struct ProfileUpdateRequest: NetworkRequest {
         return .put
     }
     
-    var isUrlEncoded: Bool? {
+    var isUrlEncoded: Bool {
         return true
     }
     

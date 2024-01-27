@@ -23,8 +23,8 @@ protocol  CollectionDataProviderProtocol: AnyObject {
 final class CollectionDataProvider: CollectionDataProviderProtocol {
     
     private var collectionData: NFTCollection? //TODO: default value
-    let networkClient: DefaultNetworkClient
-    var profile: ProfileModel?
+    private let networkClient: DefaultNetworkClient
+    private var profile: ProfileModel?
     
     init(networkClient: DefaultNetworkClient) {
         self.networkClient = networkClient
@@ -59,7 +59,6 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
     
     func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<Data, Error>) -> Void) {
         let updateRequest = ProfileUpdateRequest(profileModel: profile)
-        
         networkClient.send(request: updateRequest) { result in
             switch result {
             case .success(let data):

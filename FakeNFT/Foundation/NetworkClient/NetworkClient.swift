@@ -96,7 +96,8 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.httpBody = dtoEncoded
         }
         
-        if let queryParams = request.isUrlEncoded {
+        if (request.isUrlEncoded) {
+            print(request.endpoint)
             urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         }
 
