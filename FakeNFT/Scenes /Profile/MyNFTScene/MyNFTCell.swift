@@ -10,6 +10,9 @@ import Kingfisher
 
 final class MyNFTCell: UITableViewCell {
     
+    // MARK: Identifier
+    static let identifier = "NFTCell"
+    
     // MARK: Properties & UI Elements
     private var idNft: String?
     
@@ -88,6 +91,7 @@ final class MyNFTCell: UITableViewCell {
     // MARK: Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = .ypWhite
         addSubView()
         applyConstraint()
     }
