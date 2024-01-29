@@ -8,13 +8,19 @@
 import UIKit
 import Kingfisher
 
+// MARK: - Cell Delegate
+protocol MyNFTCellDelegate: AnyObject {
+    func changeLike(for id: String)
+}
+
+// MARK: - NFT Cell
 final class MyNFTCell: UITableViewCell {
     
     // MARK: Identifier
     static let identifier = "NFTCell"
     
     // MARK: Properties & UI Elements
-    private var idNft: String?
+    weak var delegate: MyNFTCellDelegate?
     
     private lazy var image: UIImageView = {
         let image = UIImageView()
@@ -50,7 +56,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var ownerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Owner"
+        label.text = "Admin"
         label.numberOfLines = 0
         label.font = .sfProRegular13
         return label
@@ -88,6 +94,8 @@ final class MyNFTCell: UITableViewCell {
         return stack
     }()
     
+    private var idNft: String?
+    
     // MARK: Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -112,7 +120,7 @@ final class MyNFTCell: UITableViewCell {
         
         nameLabel.text = nft.name
         ratingView.configureRating(nft.rating)
-        ownerLabel.text = "От \(nft.author)"
+        ownerLabel.text = "От" + " " + (nft.authorName ?? "Admin")
         priceLabel.text = "\(nft.price) ETH"
     }
     func configureLikeInCell(isLiked: Bool) {
@@ -146,7 +154,9 @@ final class MyNFTCell: UITableViewCell {
     
     // MARK: Actions
     @objc private func didTapLikeButton() {
-        // TODO: обработка лукаса
+        if let id = idNft {
+            delegate?.changeLike(for: id)
+        }
     }
 }
 

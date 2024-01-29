@@ -114,7 +114,6 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     // MARK: Methods
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -217,8 +216,9 @@ extension ProfileViewController: UITableViewDelegate {
         let index = indexPath.row
         switch index {
         case 0:
-            return
-            // TODO: Переход на экраны Коллекции, избранных, разработчика (Эпик 3/3)
+            let likeNFT = presenter.getLikeArray()
+            let nftId = presenter.getNftIdArray()
+            navigateToMyNft(likedNFT: likeNFT, nftId: nftId)
         case 1:
             return
             // TODO: Переход на экраны Коллекции, избранных, разработчика (Эпик 3/3)
@@ -233,6 +233,15 @@ extension ProfileViewController: UITableViewDelegate {
             break
         }
         
+    }
+}
+
+// MARK: - ProfileVC Navigate
+extension ProfileViewController {
+    func navigateToMyNft(likedNFT: [String], nftId: [String]) {
+        let vc = MyNFTViewController(likedNFT: likedNFT, nftId: nftId)
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -12,6 +12,8 @@ typealias ProfileCompletion = (Result<ProfileModel, Error>) -> Void
 protocol ProfileServiceProtocol {
     func loadProfile(completion: @escaping ProfileCompletion)
     func updateProfile(profile: ProfileModelEditing, completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func loadNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void)
+    func loadUser(userId: String, completion: @escaping (Result<UserModel, Error>) -> Void)
 }
 
 final class ProfileService: ProfileServiceProtocol {
@@ -19,7 +21,7 @@ final class ProfileService: ProfileServiceProtocol {
     private let networkClient: NetworkClient
     private let storage: ProfileStorage
 
-    init(networkClient: NetworkClient, storage: ProfileStorage) {
+    init(networkClient: NetworkClient = DefaultNetworkClient(), storage: ProfileStorage) {
         self.storage = storage
         self.networkClient = networkClient
     }
@@ -53,5 +55,15 @@ final class ProfileService: ProfileServiceProtocol {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func loadNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
+        let request = NFTRequestForProfile()
+        networkClient.send(request: request, type: [NFTModel].self, onResponse: completion)
+    }
+    
+    func loadUser(userId: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
+        let request = UserRequest(userId: userId)
+        networkClient.send(request: request, type: UserModel.self, onResponse: completion)
     }
 }

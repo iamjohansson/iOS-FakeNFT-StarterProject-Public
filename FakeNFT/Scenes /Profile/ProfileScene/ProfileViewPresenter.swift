@@ -13,6 +13,8 @@ protocol ProfileViewPresenterProtocol {
     var profileService: ProfileServiceProtocol { get }
     func getProfile()
     func saveInModel(profileModel: ProfileModel)
+    func getLikeArray() -> [String]
+    func getNftIdArray() -> [String]
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
@@ -54,5 +56,13 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
                 self?.delegate?.update()
             }
         }
+    }
+    
+    func getLikeArray() -> [String] {
+        return model?.likes ?? []
+    }
+    
+    func getNftIdArray() -> [String] {
+        return model?.nfts ?? []
     }
 }

@@ -1,5 +1,10 @@
 import Foundation
 
+struct Nft: Decodable {
+    let id: String
+    let images: [URL]
+}
+
 struct NFTModel: Decodable {
     let createdAt: String
     let name: String
@@ -9,4 +14,5 @@ struct NFTModel: Decodable {
     let price: Float
     let author: String
     let id: String
+    var authorName: String?
 }
