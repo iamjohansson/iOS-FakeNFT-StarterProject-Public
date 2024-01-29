@@ -87,9 +87,9 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
     }
     
     func reloadTableView() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-            self.collectionsRefreshControl.endRefreshing()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+            self?.collectionsRefreshControl.endRefreshing()
         }
     }
     

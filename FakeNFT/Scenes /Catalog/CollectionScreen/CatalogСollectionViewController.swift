@@ -105,10 +105,10 @@ final class CatalogСollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         presenter.viewController = self
+        presenter.loadNFTs()
         setupConstraints()
         setupNavBackButton()
         presenter.presentCollectionViewData()
-        presenter.loadNFTs()
     }
     
     private func setupConstraints() {
@@ -127,7 +127,7 @@ final class CatalogСollectionViewController: UIViewController {
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
-            contentView.backgroundColor = .ypWhite
+//            contentView.backgroundColor = .ypWhite
         }
         
         var topbarHeight: CGFloat {
@@ -242,7 +242,7 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
 extension CatalogСollectionViewController: NFTCollectionCellDelegate {
     func onLikeButtonTapped(cell: NFTCollectionCell) {
         guard let nftModel = cell.getNftModel() else { return }
-        presenter.toggleLikeStatus(model: nftModel)
+        presenter.toggleLikeStatus(model: nftModel, cell.setIsLiked)
     }
     
     
@@ -256,7 +256,8 @@ extension CatalogСollectionViewController: NFTCollectionCellDelegate {
 
 extension CatalogСollectionViewController: CatalogСollectionViewControllerProtocol {
     func renderViewData(viewData: CatalogCollectionViewData) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.loadCoverImage(url: viewData.coverImageURL)
             self.titleLabel.text = viewData.title
             self.authorLink.text = viewData.authorName

@@ -14,7 +14,7 @@ protocol  CollectionDataProviderProtocol: AnyObject {
     func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void)
     func getCollectionData() -> NFTCollection
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void)
-    func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<Data, Error>) -> Void)
+    func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<ProfileModel, Error>) -> Void)
     func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
 }
 
@@ -57,9 +57,9 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         ProgressHUD.dismiss()
     }
     
-    func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<Data, Error>) -> Void) {
+    func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         let updateRequest = ProfileUpdateRequest(profileModel: profile)
-        networkClient.send(request: updateRequest) { result in
+        networkClient.send(request: updateRequest, type: ProfileModel.self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))

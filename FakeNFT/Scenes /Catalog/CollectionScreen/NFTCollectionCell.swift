@@ -16,11 +16,9 @@ protocol NFTCollectionCellDelegate: AnyObject {
 // MARK: - Final Class
 
 final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
-    
     private var nftModel: Nft?
-    private var profileModel: ProfileModel?
     
-    private var likedByUser: Bool = false
+    private var isLiked: Bool = false
     private var itemInCart: Bool = false
     
     weak var delegate: NFTCollectionCellDelegate?
@@ -44,8 +42,9 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     }()
     
     private lazy var cartButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "addToCart"), for: .normal)
+        let button = UIButton(type: .custom)
+        button.tintColor = .ypBlack
+        button.setImage(UIImage(named: "addToCart")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.addTarget(self, action: #selector(cartItemAdded), for: .touchUpInside)
         return button
     }()
@@ -142,12 +141,12 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         nftModel = model
     }
     
-    func getNftModel() -> Nft? {
-        return nftModel
+    func setIsLiked(isLiked: Bool) -> Void {
+        self.isLiked = isLiked
     }
     
-    func getProfileModel() -> ProfileModel? {
-        return profileModel
+    func getNftModel() -> Nft? {
+        return nftModel
     }
     
     func renderCellForModel() {
@@ -160,27 +159,25 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         nftName.text = nftModel.name
         nftPrice.text = "\(nftModel.price) ETH"
         ratingStarsView.configureRating(nftModel.rating)
+        likeButton.setImage(UIImage(named: self.isLiked ? "likeActive" : "likeNotActive"), for: .normal)
     }
     
     private func configureLikeButtonImage() {
-        likedByUser.toggle()
-        let likeName = likedByUser ? "likeActive" : "likeNotActive"
+        let likeName = self.isLiked ? "likeActive" : "likeNotActive"
         likeButton.setImage(UIImage(named: likeName), for: .normal)
-    }
-    
-    private func togglelikedByUser() {
-        likedByUser.toggle()
     }
     
     private func configureCartButtonImage() {
         itemInCart.toggle()
         let cartImage = itemInCart ? "addToCart" : "deleteFromCart"
-        cartButton.setImage(UIImage(named: cartImage), for: .normal)
+        cartButton.setImage(UIImage(named: cartImage)?.withRenderingMode(.alwaysTemplate), for: .normal)
+        
+
     }
     
     func updateLikeButtonImage() {
-           configureLikeButtonImage()
-       }
+        configureLikeButtonImage()
+    }
     
     func updateCartButton() {
         configureCartButtonImage()

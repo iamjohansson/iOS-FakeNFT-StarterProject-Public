@@ -14,8 +14,10 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
     var userURL: String? { get }
     var nftArray: [Nft] { get }
     func loadNFTs()
+    func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func isAlreadyLiked(nftId: String) -> Bool
     func presentCollectionViewData()
-    func toggleLikeStatus(model: Nft)
+    func toggleLikeStatus(model: Nft, _ setIsLiked: @escaping (Bool) -> Void)
     func toggleCartStatus(model: Nft)
 }
 
@@ -24,12 +26,12 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     weak var viewController: CatalogСollectionViewControllerProtocol?
     private var dataProvider: CollectionDataProvider
+    private var userProfile: ProfileModel?
     
     let cartController: CartControllerProtocol
     let nftModel: NFTCollection
     var userURL: String?
     var nftArray: [Nft] = []
-    var profileModel: [ProfileModel] = []
     
     init(nftModel: NFTCollection, dataProvider: CollectionDataProvider, cartController: CartControllerProtocol) {
         self.nftModel = nftModel
@@ -44,6 +46,23 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             description: nftModel.description,
             authorName: nftModel.author)
         viewController?.renderViewData(viewData: viewData)
+    }
+    
+    func setUserProfile(_ profile: ProfileModel) {
+            self.userProfile = profile
+        }
+    
+    func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
+        dataProvider.getUserProfile { [weak self] result in
+            switch result {
+            case .success(let profileModel):
+                self?.setUserProfile(profileModel)
+                completion(.success(profileModel))
+            case .failure(let error):
+                print("Error getting user profile: \(error)")
+                completion(.failure(error))
+            }
+        }
     }
     
     func loadNFTs() {
@@ -67,31 +86,50 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             self.nftArray = nftArray
             self.viewController?.reloadCollectionView()
         }
+        
+        self.loadUserProfile() { updateResult in
+            switch updateResult {
+            case .success(let result):
+                self.nftArray = self.nftArray.map {
+                    var nft = $0
+                    nft.isLiked = result.likes?.contains(nft.id) ?? false
+                    return nft
+                }
+            case .failure(let error):
+                // TODO: Handle the error if needed
+                print("Error loading profile: \(error)")
+            }
+        }
     }
     
-    func toggleLikeStatus(model: Nft) {
-        dataProvider.getUserProfile { [weak self] result in
-            switch result {
-            case .success(let profileModel):
-                let updatedLikes = profileModel.likes?.contains { $0 == model.id } == true ?
-                                   profileModel.likes?.filter { $0 != model.id } :
-                                   (profileModel.likes ?? []) + [model.id]
-                
-                let updatedProfileModel = profileModel.update(newLikes: updatedLikes)
+    func isAlreadyLiked(nftId: String) -> Bool {
+        return self.userProfile?.likes?.contains { $0 == nftId } == true
+    }
+    
+    func toggleLikeStatus(model: Nft, _ setIsLiked: @escaping (Bool) -> Void) {
+        guard let profileModel = self.userProfile else {
+            print("No User Profile :c")
+            return
+        }
+        let isAlreadyLiked = profileModel.likes?.contains { $0 == model.id } == true
 
-                self?.dataProvider.updateUserProfile(with: updatedProfileModel) { updateResult in
-                    switch updateResult {
-                    case .success(let result):
-                        // TODO: Profile updated successfully and (save likes?)
-                        print("Profile updated successfully: ", result)
-                    case .failure(let error):
-                        // TODO: Handle the error if needed
-                        print("Error updating profile: \(error)")
-                    }
-                }
-                
+        let updatedLikes = isAlreadyLiked
+            ? profileModel.likes?.filter { $0 != model.id }
+            : (profileModel.likes ?? []) + [model.id]
+        
+        setIsLiked(!isAlreadyLiked)
+        
+        let updatedProfileModel = profileModel.update(newLikes: updatedLikes)
+        
+        dataProvider.updateUserProfile(with: updatedProfileModel) { updateResult in
+            switch updateResult {
+            case .success(let result):
+                // TODO: Profile updated successfully and (save likes?)
+                self.setUserProfile(result)
+                print("Profile updated successfully: ", result)
             case .failure(let error):
-                print("Error getting user profile: \(error)")
+                // TODO: Handle the error if needed
+                print("Error updating profile: \(error)")
             }
         }
     }

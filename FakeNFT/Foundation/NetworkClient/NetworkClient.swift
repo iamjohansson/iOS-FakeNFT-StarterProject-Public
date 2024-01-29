@@ -97,7 +97,6 @@ struct DefaultNetworkClient: NetworkClient {
         }
         
         if (request.isUrlEncoded) {
-            print(request.endpoint)
             urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         }
 

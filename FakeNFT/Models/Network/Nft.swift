@@ -9,4 +9,5 @@ struct Nft: Decodable {
     let author: String
     let id: String
     let createdAt: String
+    var isLiked: Bool?
 }
