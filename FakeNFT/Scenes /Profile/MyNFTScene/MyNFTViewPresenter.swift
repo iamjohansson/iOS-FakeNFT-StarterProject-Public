@@ -15,6 +15,7 @@ final class MyNFTViewPresenter {
     var likedNFT: [String]
     var nftId: [String]
     weak var view: MyNFTViewProtocol?
+    private var likeTracker: Bool = false
     private let profileService: ProfileServiceProtocol?
     
     // MARK: Initializer
@@ -44,8 +45,10 @@ final class MyNFTViewPresenter {
     func toggleLike(id: String) {
         if let index = likedNFT.firstIndex(of: id) {
             likedNFT.remove(at: index)
+            likeTracker = false
         } else {
             likedNFT.append(id)
+            likeTracker = true
         }
         updateLikes()
         view?.update(with: nftModel)
@@ -65,9 +68,10 @@ final class MyNFTViewPresenter {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
+                    self?.view?.showSuccess(isLike: self?.likeTracker ?? false)
                     break
                 case .failure(let error):
-                    assertionFailure("Ошибка обновления кнопки лайк \(error.localizedDescription)")
+                    self?.view?.showError(error: error)
                 }
             }
         }
@@ -90,7 +94,7 @@ final class MyNFTViewPresenter {
                                 self?.nftModel[index].authorName = user.name
                             }
                         case .failure(let error):
-                            assertionFailure("Ошибка в сетевом запросе \(error.localizedDescription)")
+                            self?.view?.showError(error: error)
                         }
                     }
                 }
@@ -98,7 +102,7 @@ final class MyNFTViewPresenter {
                     self?.view?.update(with: self?.nftModel ?? [])
                 }
             case .failure(let error):
-                assertionFailure("Ошибка \(error.localizedDescription)")
+                self?.view?.showError(error: error)
             }
         }
     }

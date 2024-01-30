@@ -220,8 +220,7 @@ extension ProfileViewController: UITableViewDelegate {
             let nftId = presenter.getNftIdArray()
             navigateToMyNft(likedNFT: likeNFT, nftId: nftId)
         case 1:
-            return
-            // TODO: Переход на экраны Коллекции, избранных, разработчика (Эпик 3/3)
+            navigateToFavorNFT()
         case 2:
             // временно, для перехода на работающую Web-страницу и отладки
             if let url = URL(string: "https://github.com/iamjohansson") {
@@ -233,15 +232,6 @@ extension ProfileViewController: UITableViewDelegate {
             break
         }
         
-    }
-}
-
-// MARK: - ProfileVC Navigate
-extension ProfileViewController {
-    func navigateToMyNft(likedNFT: [String], nftId: [String]) {
-        let vc = MyNFTViewController(likedNFT: likedNFT, nftId: nftId)
-        vc.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -314,6 +304,21 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
         let cache = ImageCache.default
         cache.store(newAvatar, forKey: UIConstants.avatarKey)
         self.currentAvatar = newAvatar
+    }
+}
+
+// MARK: - ProfileVC Navigate
+private extension ProfileViewController {
+    func navigateToMyNft(likedNFT: [String], nftId: [String]) {
+        let vc = MyNFTViewController(likedNFT: likedNFT, nftId: nftId)
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToFavorNFT() {
+        let vc = FavoritesNFTViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 

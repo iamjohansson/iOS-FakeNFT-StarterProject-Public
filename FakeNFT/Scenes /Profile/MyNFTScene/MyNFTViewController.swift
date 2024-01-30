@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import ProgressHUD
 
 // MARK: - ViewController Protocol
 protocol MyNFTViewProtocol: AnyObject {
     func update(with nfts: [NFTModel])
+    func showError(error: Error)
+    func showSuccess(isLike: Bool)
 }
 
 // MARK: - ViewController
@@ -21,7 +24,7 @@ final class MyNFTViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .sfProBold17
         label.textColor = .ypBlack
-        label.text = "У Вас ещё нет NFT"
+        label.text = UIConstants.placeholder
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -78,19 +81,25 @@ final class MyNFTViewController: UIViewController {
     
     private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.backward"),
+            image: UIImage(systemName: UIConstants.backButtonImage),
             style: .plain,
             target: self,
             action: #selector(didTapExitButton)
         )
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "filter"),
+            image: UIImage(named: UIConstants.filterImage),
             style: .plain,
             target: self,
             action: #selector(didTapFilterButton)
         )
-        navigationItem.title = "Мои NFT"
+        navigationItem.title = UIConstants.title
         navigationController?.navigationBar.tintColor = .ypBlack
+        navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.font: UIFont.sfProBold17 ?? UIFont.systemFont(ofSize: 17)
+             ]
+        navigationController?.navigationBar.titleTextAttributes = [
+             NSAttributedString.Key.foregroundColor: UIColor.ypBlack
+         ]
     }
     
     private func addSubview() {
@@ -101,7 +110,7 @@ final class MyNFTViewController: UIViewController {
         NSLayoutConstraint.activate([
             placeholder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIConstants.inset20),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
@@ -116,22 +125,22 @@ final class MyNFTViewController: UIViewController {
     @objc private func didTapFilterButton() {
         let alert = UIAlertController(
             title: nil,
-            message: "Сортировка",
+            message: SortConstants.message,
             preferredStyle: .actionSheet
         )
-        let priceAction = UIAlertAction(title: "По цене", style: .default, handler: { _ in
+        let priceAction = UIAlertAction(title: SortConstants.price, style: .default, handler: { _ in
             self.presenter?.filterNFT(type: .price)
         })
         alert.addAction(priceAction)
-        let ratingAction = UIAlertAction(title: "По рейтингу", style: .default, handler: { _ in
+        let ratingAction = UIAlertAction(title: SortConstants.rating, style: .default, handler: { _ in
             self.presenter?.filterNFT(type: .rating)
         })
         alert.addAction(ratingAction)
-        let nameAction = UIAlertAction(title: "По названию", style: .default, handler: { _ in
+        let nameAction = UIAlertAction(title: SortConstants.name, style: .default, handler: { _ in
             self.presenter?.filterNFT(type: .name)
         })
         alert.addAction(nameAction)
-        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: SortConstants.cancel, style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         
         present(alert, animated: true, completion: nil)
@@ -141,7 +150,7 @@ final class MyNFTViewController: UIViewController {
 // MARK: - TableView DataSource & Delegate protocols
 extension MyNFTViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let numberOfRow = presenter?.nftModel.count else { return 0 }
+        guard let numberOfRow = presenter?.nftModel.count else { return UIConstants.zero }
         return numberOfRow
     }
     
@@ -160,7 +169,7 @@ extension MyNFTViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        return UIConstants.heightRow
     }
 }
 // MARK: - NFTView Protocol
@@ -173,6 +182,19 @@ extension MyNFTViewController: MyNFTViewProtocol {
             self.tableView.reloadData()
         }
     }
+    
+    func showError(error: Error) {
+        ProgressHUD.showError("Ошибка - \(error.localizedDescription)", delay: 1.5)
+    }
+    
+    func showSuccess(isLike: Bool) {
+        let like = isLike 
+        if like {
+            ProgressHUD.showSuccess("Добавлено в избранное", image: UIImage(systemName: "heart.fill"))
+        } else {
+            ProgressHUD.showSuccess("Удалено из избранного", image: UIImage(systemName: "heart"))
+        }
+    }
 }
 
 // MARK: - Cell Delegate
@@ -182,9 +204,29 @@ extension MyNFTViewController: MyNFTCellDelegate {
         presenter.toggleLike(id: id)
         
         if let index = presenter.nftModel.firstIndex(where: { $0.id == id }) {
-            let indexPath = IndexPath(row: index, section: 0)
+            let indexPath = IndexPath(row: index, section: UIConstants.zero)
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 }
 
+// MARK: - Constants
+private extension MyNFTViewController {
+    enum UIConstants {
+        static let placeholder = "У Вас ещё нет NFT"
+        static let backButtonImage = "chevron.backward"
+        static let filterImage = "filter"
+        static let title = "Мои NFT"
+        static let inset20: CGFloat = 20
+        static let heightRow: CGFloat = 140
+        static let zero: Int = 0
+    }
+    
+    enum SortConstants {
+        static let message = "Сортировка"
+        static let price = "По цене"
+        static let rating = "По рейтингу"
+        static let name = "По названию"
+        static let cancel = "Закрыть"
+    }
+}

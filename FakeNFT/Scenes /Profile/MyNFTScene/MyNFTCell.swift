@@ -25,10 +25,10 @@ final class MyNFTCell: UITableViewCell {
     private lazy var image: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.cornerRadius = 12
+        image.layer.cornerRadius = Constants.radius
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFit
-        image.image = UIImage(systemName: "photo.fill")
+        image.image = UIImage(systemName: Constants.imagePlaceholder)
         return image
     }()
     
@@ -42,7 +42,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Name"
+        label.text = Constants.namePlaceholder
         label.font = .sfProBold17
         return label
     }()
@@ -56,7 +56,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var ownerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Admin"
+        label.text = Constants.ownerPlaceholder
         label.numberOfLines = 0
         label.font = .sfProRegular13
         return label
@@ -65,7 +65,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var priceNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Цена"
+        label.text = Constants.priceNamePlaceholder
         label.font = .sfProRegular13
         return label
     }()
@@ -73,7 +73,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "0"
+        label.text = Constants.pricePlaceholder
         label.font = .sfProBold17
         return label
     }()
@@ -81,7 +81,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var middleStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.spacing = 4
+        stack.spacing = Constants.stackSpace4
         stack.axis = .vertical
         return stack
     }()
@@ -89,7 +89,7 @@ final class MyNFTCell: UITableViewCell {
     private lazy var rightStack: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.spacing = 2
+        stack.spacing = Constants.stackSpace2
         stack.axis = .vertical
         return stack
     }()
@@ -120,11 +120,11 @@ final class MyNFTCell: UITableViewCell {
         
         nameLabel.text = nft.name
         ratingView.configureRating(nft.rating)
-        ownerLabel.text = "От" + " " + (nft.authorName ?? "Admin")
-        priceLabel.text = "\(nft.price) ETH"
+        ownerLabel.text = "От \(nft.authorName ?? Constants.authorPlaceholder)"
+        priceLabel.text = "\(nft.price) \(Constants.currency)"
     }
     func configureLikeInCell(isLiked: Bool) {
-        let imageName = isLiked ? "likeActive" : "likeNotActive"
+        let imageName = isLiked ? Constants.like : Constants.unlike
         likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
     
@@ -168,5 +168,18 @@ private extension MyNFTCell {
         static let baseOffset39: CGFloat = 39
         static let imageSize: CGFloat = 108
         static let likeSize: CGFloat = 42
+        static let stackSpace4: CGFloat = 4
+        static let stackSpace2: CGFloat = 2
+        static let radius: CGFloat = 12
+        
+        static let imagePlaceholder = "photo.fill"
+        static let namePlaceholder = "Name"
+        static let ownerPlaceholder = "Admin"
+        static let priceNamePlaceholder = "Цена"
+        static let pricePlaceholder = "0,00"
+        static let authorPlaceholder = "Admin"
+        static let currency = "ETH"
+        static let like = "likeActive"
+        static let unlike = "likeNotActive"
     }
 }
