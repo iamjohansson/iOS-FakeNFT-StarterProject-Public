@@ -160,6 +160,7 @@ final class MyNFTCell: UITableViewCell {
     }
 }
 
+// MARK: - Constants
 private extension MyNFTCell {
     enum Constants {
         static let baseOffset16: CGFloat = 16
