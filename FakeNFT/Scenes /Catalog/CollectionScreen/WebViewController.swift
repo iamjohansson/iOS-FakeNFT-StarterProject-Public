@@ -7,15 +7,39 @@
 
 import UIKit
 import WebKit
+import Combine
 
 final class WebViewController: UIViewController {
     
-    private var webView = WKWebView()
+    private lazy var webView: WKWebView = {
+        let view = WKWebView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var progressView: UIProgressView = {
+        let view = UIProgressView()
+        view.progressTintColor = .ypBlack
+        view.trackTintColor = .ypLightGray
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private let url: URL
     
-    init(url: URL) {
-        self.url = url
+    private var presenter: WebViewPresenterProtocol
+    private var subscribes = [AnyCancellable]()
+    
+    init(presenter: WebViewPresenterProtocol, url: URL?) {
+        self.presenter = presenter
+        self.url = url ?? URL(string: "https://practicum.yandex.ru/ios-developer/")!
         super.init(nibName: nil, bundle: nil)
+        
+        setupUI()
+        presenter.viewDidLoad()
+        loadWebView(with: url)
+        
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -23,21 +47,63 @@ final class WebViewController: UIViewController {
         return nil
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    private func setupUI() {
         view.backgroundColor = .ypWhite
-        webView.translatesAutoresizingMaskIntoConstraints = false
+        addSubviews()
+        applyConstraints()
+    }
+    
+    private func addSubviews() {
         view.addSubview(webView)
-        
+        view.addSubview(progressView)
+    }
+    
+    private func applyConstraints() {
         NSLayoutConstraint.activate([
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            
+            progressView.topAnchor.constraint(equalTo: webView.safeAreaLayoutGuide.topAnchor),
+            progressView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: webView.trailingAnchor)
         ])
+    }
+    
+    private func bind() {
+        presenter.progressPublisher.receive(on: DispatchQueue.main)
+            .sink { [weak self] (newValue: Float)  in
+                guard let self = self else { return }
+                
+                self.setProgressValue(newValue)
+                self.presenter.didUpdateProgressValue(self.webView.estimatedProgress)
+                
+            }.store(in: &subscribes)
         
-        let request = URLRequest(url: url)
-        webView.load(request)
+        presenter.progressStatePublisher.receive(on: DispatchQueue.main)
+            .sink { [weak self] (shouldHide: Bool) in
+                guard let self = self else { return }
+                
+                if shouldHide {
+                    self.setProgressHidden(shouldHide)
+                }
+            }.store(in: &subscribes)
+    }
+    
+    private func setProgressValue (_ newValue: Float) {
+        progressView.progress = newValue
+    }
+    
+    private func setProgressHidden(_ isHidden: Bool) {
+        progressView.isHidden = isHidden
+    }
+    
+    private func loadWebView(with url: URL?) {
+        if let url = url {
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
     }
     
     @objc private func didTapBackButton() {
