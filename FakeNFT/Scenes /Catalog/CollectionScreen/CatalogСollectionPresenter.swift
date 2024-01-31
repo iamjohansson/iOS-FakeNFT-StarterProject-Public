@@ -14,6 +14,7 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
     var userURL: String? { get }
     var nftArray: [Nft] { get }
     func loadNFTs()
+    func getUserProfile() -> ProfileModel?
     func loadAuthorWebsite(_ url: URL?)
     func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
     func isAlreadyLiked(nftId: String) -> Bool
@@ -27,6 +28,10 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     func loadAuthorWebsite(_ url: URL?) {
         //?
+    }
+    
+    func getUserProfile() -> ProfileModel? {
+        return self.userProfile
     }
     
     weak var viewController: CatalogСollectionViewControllerProtocol?
@@ -100,6 +105,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                     nft.isLiked = result.likes?.contains(nft.id) ?? false
                     return nft
                 }
+                print("nftArray: \(self.nftArray)")
             case .failure(let error):
                 // TODO: Handle the error if needed
                 print("Error loading profile: \(error)")

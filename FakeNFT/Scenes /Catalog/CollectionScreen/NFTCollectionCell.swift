@@ -164,6 +164,7 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         
         let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
         configureLikeButtonImage(isAlreadyLiked)
+        print("renderForCell isLiked: \(nftModel.isLiked)")
     }
     
     private func configureLikeButtonImage(_ isAlreadyLiked: Bool) {
@@ -175,8 +176,6 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         itemInCart.toggle()
         let cartImage = itemInCart ? "addToCart" : "deleteFromCart"
         cartButton.setImage(UIImage(named: cartImage)?.withRenderingMode(.alwaysTemplate), for: .normal)
-        
-        
     }
     
     func updateLikeButtonImage() {

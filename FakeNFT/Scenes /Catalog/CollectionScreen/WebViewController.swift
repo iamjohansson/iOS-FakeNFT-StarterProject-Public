@@ -25,6 +25,7 @@ final class WebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypWhite
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         
@@ -44,4 +45,3 @@ final class WebViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 }
-
