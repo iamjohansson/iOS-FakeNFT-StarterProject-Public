@@ -227,12 +227,7 @@ extension ProfileViewController: UITableViewDelegate {
             let likeNFT = presenter.getLikeArray()
             navigateToFavorNFT(likedNft: likeNFT)
         case 2:
-            // временно, для перехода на работающую Web-страницу и отладки
-            if let url = URL(string: "https://github.com/iamjohansson") {
-                let webVC = WebViewController(url: url)
-                webVC.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(webVC, animated: true)
-            }
+            navigateToDeveloper()
         default:
             break
         }
@@ -322,6 +317,12 @@ private extension ProfileViewController {
     
     func navigateToFavorNFT(likedNft: [String]) {
         let vc = FavoritesNFTViewController(likedNFT: likedNft)
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToDeveloper() {
+        let vc = DeveloperViewController()
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }

@@ -63,7 +63,6 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
                 switch result {
                 case .success(let profile):
                     self?.delegate?.hideLoading()
-                    print(profile)
                     self?.saveInModel(profileModel: profile)
                 case .failure(let error):
                     self?.delegate?.showError(error: error)
