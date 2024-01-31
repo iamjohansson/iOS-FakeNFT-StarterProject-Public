@@ -14,6 +14,7 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
     var userURL: String? { get }
     var nftArray: [Nft] { get }
     func loadNFTs()
+    func loadAuthorWebsite(_ url: URL?)
     func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
     func isAlreadyLiked(nftId: String) -> Bool
     func presentCollectionViewData()
@@ -24,6 +25,10 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
 // MARK: - Final Class
 
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
+    func loadAuthorWebsite(_ url: URL?) {
+        //?
+    }
+    
     weak var viewController: CatalogСollectionViewControllerProtocol?
     private var dataProvider: CollectionDataProvider
     private var userProfile: ProfileModel?

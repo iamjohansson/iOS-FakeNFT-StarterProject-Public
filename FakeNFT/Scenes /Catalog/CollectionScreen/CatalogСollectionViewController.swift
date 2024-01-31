@@ -202,7 +202,22 @@ final class CatalogСollectionViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @objc func launchWebsiteViewer() { }
+    @objc func launchWebsiteViewer(_ gesture: UITapGestureRecognizer) {
+        //guard let url = URL(string: presenter.userURL ?? "")  else { return }
+        if let labelText = (gesture.view as? UILabel)?.text {
+            var urlString = labelText
+            if !urlString.hasPrefix("http://") && !urlString.hasPrefix("https://") {
+                urlString = "https://" + urlString
+            }
+            if let url = URL(string: urlString) {
+                let webVC = WebViewController(url: url)
+                setupNavBackButton()
+                webVC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(webVC, animated: true)
+                navigationItem.backBarButtonItem =  UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
