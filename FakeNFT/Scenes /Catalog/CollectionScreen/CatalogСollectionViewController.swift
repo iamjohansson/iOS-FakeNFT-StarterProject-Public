@@ -127,7 +127,6 @@ final class CatalogСollectionViewController: UIViewController {
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
-//            contentView.backgroundColor = .ypWhite
         }
         
         var topbarHeight: CGFloat {
@@ -219,6 +218,7 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
         let cell: NFTCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         let data = presenter.nftArray[indexPath.row]
         cell.setNftModel(data)
+        cell.presenter = presenter
         cell.delegate = self
         cell.renderCellForModel()
         return cell
@@ -244,7 +244,6 @@ extension CatalogСollectionViewController: NFTCollectionCellDelegate {
         guard let nftModel = cell.getNftModel() else { return }
         presenter.toggleLikeStatus(model: nftModel, cell.setIsLiked)
     }
-    
     
     func addToCartButtonTapped(cell: NFTCollectionCell) {
         guard let nftModel = cell.getNftModel() else { return }
@@ -273,6 +272,8 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
     }
     
     func reloadCollectionView() {
-        nftCollection.reloadData()
+        DispatchQueue.main.async {
+            self.nftCollection.reloadData()
+        }
     }
 }

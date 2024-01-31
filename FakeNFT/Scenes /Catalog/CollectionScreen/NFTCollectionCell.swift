@@ -17,6 +17,7 @@ protocol NFTCollectionCellDelegate: AnyObject {
 
 final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     private var nftModel: Nft?
+    var presenter: CatalogСollectionPresenterProtocol?
     
     private var isLiked: Bool = false
     private var itemInCart: Bool = false
@@ -159,10 +160,13 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         nftName.text = nftModel.name
         nftPrice.text = "\(nftModel.price) ETH"
         ratingStarsView.configureRating(nftModel.rating)
-        likeButton.setImage(UIImage(named: self.isLiked ? "likeActive" : "likeNotActive"), for: .normal)
+        likeButton.setImage(UIImage(named: nftModel.isLiked ?? false ? "likeActive" : "likeNotActive"), for: .normal)
+        
+        let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
+        configureLikeButtonImage(isAlreadyLiked)
     }
     
-    private func configureLikeButtonImage() {
+    private func configureLikeButtonImage(_ isAlreadyLiked: Bool) {
         let likeName = self.isLiked ? "likeActive" : "likeNotActive"
         likeButton.setImage(UIImage(named: likeName), for: .normal)
     }
@@ -172,11 +176,13 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
         let cartImage = itemInCart ? "addToCart" : "deleteFromCart"
         cartButton.setImage(UIImage(named: cartImage)?.withRenderingMode(.alwaysTemplate), for: .normal)
         
-
+        
     }
     
     func updateLikeButtonImage() {
-        configureLikeButtonImage()
+        guard let nftModel = nftModel else { return }
+        let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
+        configureLikeButtonImage(isAlreadyLiked)
     }
     
     func updateCartButton() {
@@ -186,7 +192,9 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     // MARK: - @objc func
     
     @objc func userDidLike() {
-        configureLikeButtonImage()
+        guard let nftModel = nftModel else { return }
+        let isAlreadyLiked = presenter?.isAlreadyLiked(nftId: nftModel.id) ?? false
+        configureLikeButtonImage(isAlreadyLiked)
         delegate?.onLikeButtonTapped(cell: self)
     }
     

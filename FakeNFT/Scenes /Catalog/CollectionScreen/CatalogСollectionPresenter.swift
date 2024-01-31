@@ -49,8 +49,8 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     }
     
     func setUserProfile(_ profile: ProfileModel) {
-            self.userProfile = profile
-        }
+        self.userProfile = profile
+    }
     
     func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         dataProvider.getUserProfile { [weak self] result in
@@ -112,10 +112,10 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             return
         }
         let isAlreadyLiked = profileModel.likes?.contains { $0 == model.id } == true
-
+        
         let updatedLikes = isAlreadyLiked
-            ? profileModel.likes?.filter { $0 != model.id }
-            : (profileModel.likes ?? []) + [model.id]
+        ? profileModel.likes?.filter { $0 != model.id }
+        : (profileModel.likes ?? []) + [model.id]
         
         setIsLiked(!isAlreadyLiked)
         
@@ -127,6 +127,15 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 // TODO: Profile updated successfully and (save likes?)
                 self.setUserProfile(result)
                 print("Profile updated successfully: ", result)
+                
+                self.nftArray = self.nftArray.map {
+                    var nft = $0
+                    if nft.id == model.id {
+                        nft.isLiked = !isAlreadyLiked
+                    }
+                    return nft
+                }
+                self.viewController?.reloadCollectionView()
             case .failure(let error):
                 // TODO: Handle the error if needed
                 print("Error updating profile: \(error)")
