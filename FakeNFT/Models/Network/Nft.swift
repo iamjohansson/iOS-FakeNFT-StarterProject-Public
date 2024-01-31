@@ -9,5 +9,21 @@ struct Nft: Decodable {
     let author: String
     let id: String
     let createdAt: String
-    var isLiked: Bool?
+    let isLiked: Bool?
+    
+    func update(newLiked: Bool) -> Nft {
+        .init(
+            name: name,
+            images: images,
+            rating: rating,
+            description: description,
+            price: price,
+            author: author,
+            id: id,
+            createdAt: createdAt,
+            isLiked: newLiked
+        )
+    }
 }
+
+

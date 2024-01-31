@@ -1,0 +1,20 @@
+// TabBarController
+"Tab.profile" = "Profile";
+"Tab.catalog" = "Catalog";
+"Tab.cart" = "Cart";
+"Tab.statistics" = "Statistics";
+
+// CatalogVC
+"catalogSorting" = "Sorting";
+"catalogSortByName" = "By Name";
+"catalogSortByNFTCount" = "By NFT Count";
+"catalogClose" = "Close";
+
+// CollectionVC
+"AboutAuthor" = "Collection Author:";
+
+"Catalog.openNft" = "Open Nft";
+"Error.network" = "Network Error";
+"Error.unknown" = "Error is unknown";
+"Error.repeat" = "Try again";
+"Error.title" = "Error";

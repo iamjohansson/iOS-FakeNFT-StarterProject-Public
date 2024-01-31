@@ -69,7 +69,6 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 self?.setUserProfile(profileModel)
                 completion(.success(profileModel))
             case .failure(let error):
-                print("Error getting user profile: \(error)")
                 completion(.failure(error))
             }
         }
@@ -102,13 +101,12 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             case .success(let result):
                 self.nftArray = self.nftArray.map {
                     var nft = $0
-                    nft.isLiked = result.likes?.contains(nft.id) ?? false
-                    return nft
+                    let newLiked = result.likes?.contains($0.id) ?? false
+                    return $0.update(newLiked: newLiked)
                 }
                 print("nftArray: \(self.nftArray)")
-            case .failure(let error):
+            case .failure(let error): break
                 // TODO: Handle the error if needed
-                print("Error loading profile: \(error)")
             }
         }
     }
@@ -119,7 +117,6 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     
     func toggleLikeStatus(model: Nft, _ setIsLiked: @escaping (Bool) -> Void) {
         guard let profileModel = self.userProfile else {
-            print("No User Profile :c")
             return
         }
         let isAlreadyLiked = profileModel.likes?.contains { $0 == model.id } == true
@@ -137,19 +134,18 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             case .success(let result):
                 // TODO: Profile updated successfully and (save likes?)
                 self.setUserProfile(result)
-                print("Profile updated successfully: ", result)
                 
                 self.nftArray = self.nftArray.map {
                     var nft = $0
                     if nft.id == model.id {
-                        nft.isLiked = !isAlreadyLiked
+                        let newLiked = !isAlreadyLiked
+                        nft = nft.update(newLiked: newLiked)
                     }
                     return nft
                 }
                 self.viewController?.reloadCollectionView()
-            case .failure(let error):
+            case .failure(let error): break
                 // TODO: Handle the error if needed
-                print("Error updating profile: \(error)")
             }
         }
     }
