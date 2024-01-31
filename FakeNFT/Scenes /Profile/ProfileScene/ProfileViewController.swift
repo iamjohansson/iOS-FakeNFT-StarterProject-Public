@@ -93,6 +93,11 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private var onImageLoaded: ((UIImage) -> Void)?
     
     // MARK: Lifecycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewDidLoad()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
@@ -101,7 +106,6 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         addSubView()
         applyConstraint()
         setupDelegates()
-        presenter.getProfile()
     }
     
     init(presenter: ProfileViewPresenterProtocol) {

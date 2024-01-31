@@ -109,7 +109,7 @@ final class FavoritesNFTCell: UICollectionViewCell {
             image.leadingAnchor.constraint(equalTo: leadingAnchor),
             image.bottomAnchor.constraint(equalTo: bottomAnchor),
             image.heightAnchor.constraint(equalToConstant: Constants.imageSize),
-            image.heightAnchor.constraint(equalToConstant: Constants.imageSize),
+            image.widthAnchor.constraint(equalToConstant: Constants.imageSize),
             likeButton.topAnchor.constraint(equalTo: image.topAnchor),
             likeButton.trailingAnchor.constraint(equalTo: image.trailingAnchor),
             likeButton.heightAnchor.constraint(equalToConstant: Constants.likeSize),

@@ -27,10 +27,6 @@ final class ProfileService: ProfileServiceProtocol {
     }
     
     func loadProfile(completion: @escaping ProfileCompletion) {
-        if let profile = storage.getProfile() {
-            completion(.success(profile))
-            return
-        }
         
         let request = ProfileRequest()
         networkClient.send(request: request, type: ProfileModel.self) { [weak storage] result in
