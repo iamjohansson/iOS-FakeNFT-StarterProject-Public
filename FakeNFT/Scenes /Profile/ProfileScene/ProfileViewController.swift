@@ -220,7 +220,8 @@ extension ProfileViewController: UITableViewDelegate {
             let nftId = presenter.getNftIdArray()
             navigateToMyNft(likedNFT: likeNFT, nftId: nftId)
         case 1:
-            navigateToFavorNFT()
+            let likeNFT = presenter.getLikeArray()
+            navigateToFavorNFT(likedNft: likeNFT)
         case 2:
             // временно, для перехода на работающую Web-страницу и отладки
             if let url = URL(string: "https://github.com/iamjohansson") {
@@ -315,8 +316,8 @@ private extension ProfileViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func navigateToFavorNFT() {
-        let vc = FavoritesNFTViewController()
+    func navigateToFavorNFT(likedNft: [String]) {
+        let vc = FavoritesNFTViewController(likedNFT: likedNft)
         vc.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(vc, animated: true)
     }

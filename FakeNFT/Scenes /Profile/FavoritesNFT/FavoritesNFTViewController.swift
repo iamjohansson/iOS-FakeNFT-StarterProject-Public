@@ -6,6 +6,14 @@
 //
 
 import UIKit
+import ProgressHUD
+
+// MARK: - ViewController Protocol
+protocol FavoriteNFTViewProtocol: AnyObject {
+    func update(with nfts: [NFTModel])
+    func showError(error: Error)
+    func showSuccess()
+}
 
 // MARK: - ViewController
 final class FavoritesNFTViewController: UIViewController {
@@ -33,17 +41,41 @@ final class FavoritesNFTViewController: UIViewController {
     }()
     
     private var presenter: FavoritesNFTViewPresenter?
+    private var likedNFT: [String]
+    private var nftModelWithLike: [NFTModel] = []
     
     // MARK: Lifecycle
+    
+    init(likedNFT: [String]) {
+        self.likedNFT = likedNFT
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        assertionFailure("init(coder:) has not been implemented")
+        self.likedNFT = []
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
         setupNavBar()
         addSubView()
         applyConstraint()
+        setupPresenter()
     }
     
     // MARK: Methods
+    private func setupPresenter() {
+        let nw = DefaultNetworkClient()
+        let storage = ProfileStorage()
+        let profileService = ProfileService(networkClient: nw, storage: storage)
+        presenter = FavoritesNFTViewPresenter(profileService: profileService, likedNFT: likedNFT)
+        presenter?.view = self
+        presenter?.viewDidLoad()
+    }
+    
     private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: Constants.backButtonImage),
@@ -85,8 +117,7 @@ final class FavoritesNFTViewController: UIViewController {
 // MARK: - UICollection DataSource
 extension FavoritesNFTViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
-        // TODO: Количество NFTs
+        return presenter?.nftModelWithLike.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -95,8 +126,10 @@ extension FavoritesNFTViewController: UICollectionViewDataSource {
                 withReuseIdentifier: FavoritesNFTCell.identifier,
                 for: indexPath
             ) as? FavoritesNFTCell else { return UICollectionViewCell() }
-        
-        // TODO: Конфигурируем ячейку, на прием забираем nft
+        let nft = nftModelWithLike[indexPath.row]
+        cell.configure(nft: nft)
+        cell.delegate = self
+        cell.configureLikeInCell(isLiked: likedNFT.contains(nft.id))
         return cell
     }
 }
@@ -123,6 +156,37 @@ extension FavoritesNFTViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return GeometricParams.lineSpacing
+    }
+}
+
+// MARK: - FavoriteNFT Protocol
+extension FavoritesNFTViewController: FavoriteNFTViewProtocol {
+    func update(with nfts: [NFTModel]) {
+        self.nftModelWithLike = nfts
+        
+        DispatchQueue.main.async {
+            let isLikedNftEmpty = self.nftModelWithLike.isEmpty
+            self.placeholder.isHidden = !isLikedNftEmpty
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func showError(error: Error) {
+        ProgressHUD.showError("Ошибка - \(error.localizedDescription)", delay: 1.5)
+    }
+    
+    func showSuccess() {
+        ProgressHUD.showSuccess("Удалено из избранного", image: UIImage(systemName: "heart"))
+    }
+}
+
+// MARK: - Cell Delegate
+extension FavoritesNFTViewController: FavoritesNFTCellDelegate {
+    func tapLike(cell: FavoritesNFTCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let nft = nftModelWithLike[indexPath.row]
+        presenter?.toggleLike(nft: nft)
+        collectionView.deleteItems(at: [indexPath])
     }
 }
 
