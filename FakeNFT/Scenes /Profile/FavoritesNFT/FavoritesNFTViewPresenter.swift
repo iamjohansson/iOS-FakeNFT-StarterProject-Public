@@ -7,7 +7,14 @@
 
 import Foundation
 
-final class FavoritesNFTViewPresenter {
+protocol FavoritesNFTViewPresenterProtocol: AnyObject {
+    var view: FavoriteNFTViewProtocol? { get set }
+    var nftModelWithLike: [NFTModel] { get }
+    func viewDidLoad()
+    func toggleLike(nft: NFTModel)
+}
+
+final class FavoritesNFTViewPresenter: FavoritesNFTViewPresenterProtocol {
     
     weak var view: FavoriteNFTViewProtocol?
     var nftModelWithLike: [NFTModel] = []
@@ -18,7 +25,7 @@ final class FavoritesNFTViewPresenter {
         self.profileService = profileService
         self.likedNFT = likedNFT
     }
-    
+
     func viewDidLoad() {
         getLikes()
     }

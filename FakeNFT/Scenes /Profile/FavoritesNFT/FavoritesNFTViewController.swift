@@ -40,7 +40,7 @@ final class FavoritesNFTViewController: UIViewController {
         return collectionView
     }()
     
-    private var presenter: FavoritesNFTViewPresenter?
+    private var presenter: FavoritesNFTViewPresenterProtocol
     private var likedNFT: [String]
     private var nftModelWithLike: [NFTModel] = []
     
@@ -48,12 +48,24 @@ final class FavoritesNFTViewController: UIViewController {
     
     init(likedNFT: [String]) {
         self.likedNFT = likedNFT
+
+        let nw = DefaultNetworkClient()
+        let storage = ProfileStorage()
+        let profileService = ProfileService(networkClient: nw, storage: storage)
+        presenter = FavoritesNFTViewPresenter(profileService: profileService, likedNFT: likedNFT)
+        
         super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         assertionFailure("init(coder:) has not been implemented")
         self.likedNFT = []
+        
+        let nw = DefaultNetworkClient()
+        let storage = ProfileStorage()
+        let profileService = ProfileService(networkClient: nw, storage: storage)
+        presenter = FavoritesNFTViewPresenter(profileService: profileService, likedNFT: likedNFT)
+        
         super.init(coder: coder)
     }
     
@@ -63,19 +75,11 @@ final class FavoritesNFTViewController: UIViewController {
         setupNavBar()
         addSubView()
         applyConstraint()
-        setupPresenter()
+        presenter.view = self
+        presenter.viewDidLoad()
     }
     
-    // MARK: Methods
-    private func setupPresenter() {
-        let nw = DefaultNetworkClient()
-        let storage = ProfileStorage()
-        let profileService = ProfileService(networkClient: nw, storage: storage)
-        presenter = FavoritesNFTViewPresenter(profileService: profileService, likedNFT: likedNFT)
-        presenter?.view = self
-        presenter?.viewDidLoad()
-    }
-    
+    // MARK: Methods    
     private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: Constants.backButtonImage),
@@ -117,7 +121,7 @@ final class FavoritesNFTViewController: UIViewController {
 // MARK: - UICollection DataSource
 extension FavoritesNFTViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter?.nftModelWithLike.count ?? 0
+        return presenter.nftModelWithLike.count 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -185,7 +189,7 @@ extension FavoritesNFTViewController: FavoritesNFTCellDelegate {
     func tapLike(cell: FavoritesNFTCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         let nft = nftModelWithLike[indexPath.row]
-        presenter?.toggleLike(nft: nft)
+        presenter.toggleLike(nft: nft)
         collectionView.deleteItems(at: [indexPath])
     }
 }
