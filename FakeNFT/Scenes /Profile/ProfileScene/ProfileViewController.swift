@@ -331,7 +331,7 @@ private extension ProfileViewController {
 // MARK: - Constants
 private extension ProfileViewController {
     enum TableViewConstants {
-        static let myNFT = "Мой NFT "
+        static let myNFT = "Мои NFT "
         static let myFavorite = "Избранные NFT "
         static let about = "О разработчике"
         static let bracket1st = "("
