@@ -181,7 +181,7 @@ final class CatalogСollectionViewController: UIViewController {
     }
     
     private func setupNavBackButton() {
-        navigationController!.navigationBar.tintColor = .ypBlack
+        navigationController?.navigationBar.tintColor = .ypBlack
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named:"backward"),
             style: .plain,
@@ -276,7 +276,7 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
     }
     
     private func loadCoverImage(url : String) {
-        guard let imageUrl = URL(string: url.urlDecoder) else {
+        guard let imageUrl = URL(string: url.urlDecoder ?? "") else {
             return
         }
         coverImageView.kf.setImage(with: imageUrl)

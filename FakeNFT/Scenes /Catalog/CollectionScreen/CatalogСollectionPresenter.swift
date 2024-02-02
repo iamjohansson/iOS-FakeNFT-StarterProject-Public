@@ -15,7 +15,6 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
     var nftArray: [Nft] { get }
     func loadNFTs()
     func getUserProfile() -> ProfileModel?
-    func loadAuthorWebsite(_ url: URL?)
     func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
     func isAlreadyLiked(nftId: String) -> Bool
     func presentCollectionViewData()
@@ -26,10 +25,7 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
 // MARK: - Final Class
 
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
-    func loadAuthorWebsite(_ url: URL?) {
-        //?
-    }
-    
+  
     func getUserProfile() -> ProfileModel? {
         return self.userProfile
     }
@@ -42,6 +38,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     let nftModel: NFTCollection
     var userURL: String?
     var nftArray: [Nft] = []
+    var profileModel: [ProfileModel] = []
     
     init(nftModel: NFTCollection, dataProvider: CollectionDataProvider, cartController: CartControllerProtocol) {
         self.nftModel = nftModel
@@ -125,7 +122,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         ? profileModel.likes?.filter { $0 != model.id }
         : (profileModel.likes ?? []) + [model.id]
         
-        setIsLiked(!isAlreadyLiked)
+        setIsLiked(isAlreadyLiked)
         
         let updatedProfileModel = profileModel.update(newLikes: updatedLikes)
         
@@ -138,14 +135,13 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 self.nftArray = self.nftArray.map {
                     var nft = $0
                     if nft.id == model.id {
-                        let newLiked = !isAlreadyLiked
+                        let newLiked = isAlreadyLiked
                         nft = nft.update(newLiked: newLiked)
                     }
                     return nft
                 }
                 self.viewController?.reloadCollectionView()
-            case .failure(let error): break
-                // TODO: Handle the error if needed
+            case .failure(_): break
             }
         }
     }

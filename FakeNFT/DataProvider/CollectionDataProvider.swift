@@ -12,7 +12,7 @@ import ProgressHUD
 
 protocol  CollectionDataProviderProtocol: AnyObject {
     func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void)
-    func getCollectionData() -> NFTCollection
+    func getCollectionData() throws -> NFTCollection
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void)
     func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<ProfileModel, Error>) -> Void)
     func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
@@ -22,7 +22,12 @@ protocol  CollectionDataProviderProtocol: AnyObject {
 
 final class CollectionDataProvider: CollectionDataProviderProtocol {
     
-    private var collectionData: NFTCollection? //TODO: default value
+    enum CollectionDataError: Error {
+        case dataNotFound
+        case invalidData
+    }
+    
+    private var collectionData: NFTCollection?
     private let networkClient: DefaultNetworkClient
     private var profile: ProfileModel?
     
@@ -30,8 +35,8 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         self.networkClient = networkClient
     }
     
-    func getCollectionData() -> NFTCollection {
-        return self.collectionData! //TODO: remove unwrap after giving default value above
+    func getCollectionData() throws -> NFTCollection {
+        return try self.collectionData ?? { throw CollectionDataError.dataNotFound }()
     }
     
     func fetchCollectionDataById(id: String, completion: @escaping (NFTCollection) -> Void) {

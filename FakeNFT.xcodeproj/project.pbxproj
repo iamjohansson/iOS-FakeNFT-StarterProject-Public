@@ -25,7 +25,6 @@
 		01566AB42B5F0AB500B5E9C6 /* CatalogCollectionViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01566AB32B5F0AB500B5E9C6 /* CatalogCollectionViewData.swift */; };
 		01566AB62B607A7900B5E9C6 /* CatalogСollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01566AB52B607A7900B5E9C6 /* CatalogСollectionPresenter.swift */; };
 		01566AB82B607FCB00B5E9C6 /* CollectionDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01566AB72B607FCB00B5E9C6 /* CollectionDataProvider.swift */; };
-		018095452B65C69200B9F788 /* LikesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018095442B65C69200B9F788 /* LikesStorage.swift */; };
 		018095472B6A7C1600B9F788 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018095462B6A7C1600B9F788 /* WebViewController.swift */; };
 		018095492B6AF6CA00B9F788 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018095482B6AF6CA00B9F788 /* WebViewPresenter.swift */; };
 		0180954C2B6B109400B9F788 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0180954E2B6B109400B9F788 /* Localizable.strings */; };
@@ -116,7 +115,6 @@
 		01566AB32B5F0AB500B5E9C6 /* CatalogCollectionViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCollectionViewData.swift; sourceTree = "<group>"; };
 		01566AB52B607A7900B5E9C6 /* CatalogСollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CatalogСollectionPresenter.swift"; sourceTree = "<group>"; };
 		01566AB72B607FCB00B5E9C6 /* CollectionDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDataProvider.swift; sourceTree = "<group>"; };
-		018095442B65C69200B9F788 /* LikesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesStorage.swift; sourceTree = "<group>"; };
 		018095462B6A7C1600B9F788 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		018095482B6AF6CA00B9F788 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		0180954D2B6B109400B9F788 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -277,7 +275,6 @@
 		018095432B65C67E00B9F788 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				018095442B65C69200B9F788 /* LikesStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -716,7 +713,6 @@
 				3F478ECF29DB474E00F6D39E /* Colors.swift in Sources */,
 				01F258A02B61F76D000DBF4F /* ProfileGetRequest.swift in Sources */,
 				01566AA52B599FF700B5E9C6 /* String + Extension.swift in Sources */,
-				018095452B65C69200B9F788 /* LikesStorage.swift in Sources */,
 				01566AA72B59AB3F00B5E9C6 /* NFTCollectionModel.swift in Sources */,
 				0C79EE662A76DDFF00EE90EA /* NftDetailViewController.swift in Sources */,
 				01566AB62B607A7900B5E9C6 /* CatalogСollectionPresenter.swift in Sources */,
