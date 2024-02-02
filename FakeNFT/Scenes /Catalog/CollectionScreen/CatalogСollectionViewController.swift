@@ -14,6 +14,7 @@ import ProgressHUD
 protocol CatalogСollectionViewControllerProtocol: AnyObject {
     func renderViewData(viewData: CatalogCollectionViewData)
     func reloadCollectionView()
+    func reloadVisibleCells()
 }
 
 // MARK: - Final Class
@@ -272,6 +273,16 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
             self.titleLabel.text = viewData.title
             self.authorLink.text = viewData.authorName
             self.collectionDescriptionLabel.text = viewData.description
+        }
+    }
+    
+    func reloadVisibleCells() {
+        DispatchQueue.main.async {
+            self.nftCollection.visibleCells.forEach { cell in
+                if let nftCell = cell as? NFTCollectionCell {
+                    nftCell.updateLikeButtonImage()
+                }
+            }
         }
     }
     

@@ -168,7 +168,7 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     }
     
     private func configureLikeButtonImage(_ isAlreadyLiked: Bool) {
-        let likeName = self.isLiked ? "likeActive" : "likeNotActive"
+        let likeName = isAlreadyLiked ? "likeActive" : "likeNotActive"
         likeButton.setImage(UIImage(named: likeName), for: .normal)
     }
     

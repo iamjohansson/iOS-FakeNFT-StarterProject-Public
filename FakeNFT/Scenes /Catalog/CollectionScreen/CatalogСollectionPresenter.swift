@@ -97,12 +97,12 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             switch updateResult {
             case .success(let result):
                 self.nftArray = self.nftArray.map {
-                    var nft = $0
                     let newLiked = result.likes?.contains($0.id) ?? false
                     return $0.update(newLiked: newLiked)
                 }
                 print("nftArray: \(self.nftArray)")
-            case .failure(let error): break
+                self.viewController?.reloadVisibleCells()
+            case .failure(_): break
                 // TODO: Handle the error if needed
             }
         }
@@ -140,7 +140,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                     }
                     return nft
                 }
-                self.viewController?.reloadCollectionView()
+                self.viewController?.reloadVisibleCells()
             case .failure(_): break
             }
         }
