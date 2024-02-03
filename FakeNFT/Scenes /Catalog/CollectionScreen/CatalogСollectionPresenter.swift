@@ -28,7 +28,7 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
 // MARK: - Final Class
 
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
-  
+    
     func getUserProfile() -> ProfileModel? {
         return self.userProfile
     }
@@ -121,7 +121,6 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             case .success(_):
                 self.viewController?.reloadVisibleCells()
             case .failure(_): break
-                // TODO: Handle the error if needed
             }
         }
         
@@ -130,7 +129,6 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             case .success(_):
                 self.viewController?.reloadVisibleCells()
             case .failure(_): break
-                // TODO: Handle the error if needed
             }
         }
     }
@@ -172,7 +170,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         let updatedNfts = isAlreadyInCart(nftId: model.id)
         ? orderModel.nfts?.filter { $0 != model.id }
         : (orderModel.nfts ?? []) + [model.id]
-            
+        
         let updatedOrderModel = orderModel.update(newNfts: updatedNfts)
         
         dataProvider.updateUserOrder(with: updatedOrderModel) { updateResult in

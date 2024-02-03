@@ -138,14 +138,14 @@ final class NFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     func setNftModel(_ model: Nft?) {
         nftModel = model
     }
-
+    
     func getNftModel() -> Nft? {
         return nftModel
     }
     
     func renderCellForModel() {
         guard let nftModel = nftModel else { return }
-
+        
         if let imageURL = nftModel.images.first {
             nftImage.kf.setImage(with: imageURL)
         }
