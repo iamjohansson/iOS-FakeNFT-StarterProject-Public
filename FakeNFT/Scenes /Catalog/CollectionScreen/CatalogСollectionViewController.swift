@@ -254,7 +254,7 @@ extension CatalogСollectionViewController: UICollectionViewDataSource, UICollec
 extension CatalogСollectionViewController: NFTCollectionCellDelegate {
     func onLikeButtonTapped(cell: NFTCollectionCell) {
         guard let nftModel = cell.getNftModel() else { return }
-        presenter.toggleLikeStatus(model: nftModel, cell.setIsLiked)
+        presenter.toggleLikeStatus(model: nftModel)
     }
     
     func addToCartButtonTapped(cell: NFTCollectionCell) {
@@ -281,6 +281,7 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
             self.nftCollection.visibleCells.forEach { cell in
                 if let nftCell = cell as? NFTCollectionCell {
                     nftCell.updateLikeButtonImage()
+                    nftCell.updateCartButtonImage()
                 }
             }
         }

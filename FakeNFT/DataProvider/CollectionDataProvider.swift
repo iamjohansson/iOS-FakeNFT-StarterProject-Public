@@ -15,7 +15,9 @@ protocol  CollectionDataProviderProtocol: AnyObject {
     func getCollectionData() throws -> NFTCollection
     func loadNFTsBy(id: String, completion: @escaping (Result<Nft, Error>) -> Void)
     func updateUserProfile(with profile: ProfileModel, completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func updateUserOrder(with order: OrderModel, completion: @escaping (Result<OrderModel, Error>) -> Void)
     func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func getUserOrder(completion: @escaping (Result<OrderModel, Error>) -> Void)
 }
 
 // MARK: - final class
@@ -74,8 +76,31 @@ final class CollectionDataProvider: CollectionDataProviderProtocol {
         }
     }
     
+    func updateUserOrder(with order: OrderModel, completion: @escaping (Result<OrderModel, Error>) -> Void) {
+        let updateRequest = OrderUpdateRequest(order: order)
+        networkClient.send(request: updateRequest, type: OrderModel.self) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func getUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         networkClient.send(request: ProfileGetRequest(), type: ProfileModel.self) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func getUserOrder(completion: @escaping (Result<OrderModel, Error>) -> Void) {
+        networkClient.send(request: OrderGetRequest(), type: OrderModel.self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
