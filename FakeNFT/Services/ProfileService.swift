@@ -14,6 +14,7 @@ protocol ProfileServiceProtocol {
     func updateProfile(profile: ProfileModelEditing, completion: @escaping (Result<ProfileModel, Error>) -> Void)
     func loadNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void)
     func loadUser(userId: String, completion: @escaping (Result<UserModel, Error>) -> Void)
+    func loadAllNfts(completion: @escaping (Result<[NFTModel], Error>) -> Void)
 }
 
 final class ProfileService: ProfileServiceProtocol {
@@ -61,5 +62,17 @@ final class ProfileService: ProfileServiceProtocol {
     func loadUser(userId: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
         let request = UserRequest(userId: userId)
         networkClient.send(request: request, type: UserModel.self, onResponse: completion)
+    }
+    
+    func loadAllNfts(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
+        let request = NFTRequestForProfile()
+        networkClient.send(request: request, type: [NFTModel].self, completionQueue: .main) { result in
+            switch result {
+            case .success(let nfts):
+                completion(.success(nfts))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

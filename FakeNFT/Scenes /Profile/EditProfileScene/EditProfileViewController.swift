@@ -9,6 +9,7 @@ import UIKit
 import ProgressHUD
 
 protocol EditProfileViewProtocol: AnyObject {
+    var currentProfile: ProfileModel? { get set }
     func updateProfile(with profile: ProfileModel)
     func showLoading()
     func hideLoading()

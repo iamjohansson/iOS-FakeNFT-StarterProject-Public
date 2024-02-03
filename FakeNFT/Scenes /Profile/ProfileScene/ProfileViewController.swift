@@ -264,7 +264,8 @@ extension ProfileViewController: ProfileViewControllerDelegate {
         self.nameLabel.text = profileModel.name
         self.descriptionLabel.text = profileModel.description
         self.webLinkLabel.text = profileModel.website
-        self.nftsCount = profileModel.nfts.count
+        self.nftsCount = RequestConstants.baseURL == URLType.mock ? 
+        profileModel.nfts.count : 68
         self.likesCount = profileModel.likes.count
         self.tableView.reloadData()
     }

@@ -30,7 +30,9 @@ final class EditProfileViewPresenter: EditProfilePresenterProtocol {
     
     func updateProfile(name: String?, description: String?, website: String?) {
         view?.showLoading()
-        let profileModel = ProfileModelEditing(name: name, description: description, website: website, likes: nil)
+        let likes = view?.currentProfile?.likes
+        let likesArray = likes?.map { "\($0)" }
+        let profileModel = ProfileModelEditing(name: name, description: description, website: website, likes: likesArray)
         profileService.updateProfile(profile: profileModel) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {

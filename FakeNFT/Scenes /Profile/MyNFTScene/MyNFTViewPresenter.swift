@@ -27,7 +27,17 @@ final class MyNFTViewPresenter {
     
     // MARK: Methods
     func viewDidLoad() {
-        getNFTs()
+        /*
+         Определяем какой url используем.
+         В test url'е приходит пустой массив nfts, который необновляем из-за проблем бэка
+         По сути, в данном сценарии выгружается весь перечень nfts по get-запросу
+         Можно сменить base url на mock.api и получать корректные карточки.
+         */
+        if RequestConstants.baseURL == URLType.test {
+            getAllNFTs()
+        } else {
+            getNFTs()
+        }
     }
     
     func filterNFT(type: FilterType) {
@@ -103,6 +113,19 @@ final class MyNFTViewPresenter {
                 }
             case .failure(let error):
                 self?.view?.showError(error: error)
+            }
+        }
+    }
+    
+    private func getAllNFTs() {
+        profileService?.loadAllNfts { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let nfts):
+                self.nftModel = nfts
+                self.view?.update(with: self.nftModel)
+            case .failure(let error):
+                self.view?.showError(error: error)
             }
         }
     }
