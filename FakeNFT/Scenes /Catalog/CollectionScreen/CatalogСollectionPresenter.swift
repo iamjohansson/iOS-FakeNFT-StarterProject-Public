@@ -105,7 +105,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 switch result {
                 case .success(let data):
                     nftArray.append(data)
-                case .failure(let error):
+                case .failure(_): break
                 }
                 group.leave()
             }
