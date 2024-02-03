@@ -120,7 +120,8 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             switch updateResult {
             case .success(_):
                 self.viewController?.reloadVisibleCells()
-            case .failure(_): break
+            case .failure:
+                break
             }
         }
         
@@ -128,7 +129,8 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             switch updateResult {
             case .success(_):
                 self.viewController?.reloadVisibleCells()
-            case .failure(_): break
+            case .failure:
+                break
             }
         }
     }
@@ -157,7 +159,8 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             case .success(let result):
                 self.setUserProfile(result)
                 self.viewController?.reloadVisibleCells()
-            case .failure(_): break
+            case .failure:
+                break
             }
         }
     }
@@ -178,7 +181,8 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
             case .success(let result):
                 self.setUserOrder(result)
                 self.viewController?.reloadVisibleCells()
-            case .failure(_): break
+            case .failure:
+                break
             }
         }
     }

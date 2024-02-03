@@ -277,15 +277,20 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
     }
     
     func reloadVisibleCells() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
             self.nftCollection.visibleCells.forEach { cell in
-                if let nftCell = cell as? NFTCollectionCell {
-                    nftCell.updateLikeButtonImage()
-                    nftCell.updateCartButtonImage()
+                guard let nftCell = cell as? NFTCollectionCell else {
+                    // Handle unexpected cell type if necessary
+                    return
                 }
+                nftCell.updateLikeButtonImage()
+                nftCell.updateCartButtonImage()
             }
         }
     }
+    
     
     private func loadCoverImage(url : String) {
         guard let imageUrl = URL(string: url.urlDecoder ?? "") else {
@@ -295,7 +300,9 @@ extension CatalogСollectionViewController: CatalogСollectionViewControllerProt
     }
     
     func reloadCollectionView() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
             self.nftCollection.reloadData()
         }
     }
