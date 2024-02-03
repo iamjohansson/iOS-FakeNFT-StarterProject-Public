@@ -13,7 +13,6 @@ final class AppConfiguration {
     private let cartService: CartControllerProtocol
     
     init() {
-        let networkClient = DefaultNetworkClient()
         let dataProvider = CatalogDataProvider(networkClient: DefaultNetworkClient())
         let catalogPresenter = CatalogPresenter(dataProvider: dataProvider)
         cartService = CartService()

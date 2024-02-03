@@ -7,21 +7,15 @@
 
 import Foundation
 
-struct ProfileUpdateRequest: NetworkRequest {
+struct OrderUpdateRequest: NetworkRequest {
     
-    let profileModel: ProfileModel
+    let order: OrderModel
     
     var endpoint: URL? {
-        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
+        var urlComponents = URLComponents(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
         var components: [URLQueryItem] = []
         
-        if let likes = profileModel.likes {
-            for like in likes {
-                components.append(URLQueryItem(name: "likes", value: like))
-            }
-        }
-        
-        if let nfts = profileModel.nfts {
+        if let nfts = order.nfts {
             for nft in nfts {
                 components.append(URLQueryItem(name: "nfts", value: nft))
             }

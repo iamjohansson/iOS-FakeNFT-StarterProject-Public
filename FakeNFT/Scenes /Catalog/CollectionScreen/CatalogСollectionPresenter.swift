@@ -14,24 +14,39 @@ protocol CatalogСollectionPresenterProtocol: AnyObject {
     var userURL: String? { get }
     var nftArray: [Nft] { get }
     func loadNFTs()
+    func getUserProfile() -> ProfileModel?
+    func getUserOrder() -> OrderModel?
     func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func loadUserOrder(completion: @escaping (Result<OrderModel, Error>) -> Void)
     func isAlreadyLiked(nftId: String) -> Bool
+    func isAlreadyInCart(nftId: String) -> Bool
     func presentCollectionViewData()
-    func toggleLikeStatus(model: Nft, _ setIsLiked: @escaping (Bool) -> Void)
+    func toggleLikeStatus(model: Nft)
     func toggleCartStatus(model: Nft)
 }
 
 // MARK: - Final Class
 
 final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
+    
+    func getUserProfile() -> ProfileModel? {
+        return self.userProfile
+    }
+    
+    func getUserOrder() -> OrderModel? {
+        return self.userOrder
+    }
+    
     weak var viewController: CatalogСollectionViewControllerProtocol?
     private var dataProvider: CollectionDataProvider
     private var userProfile: ProfileModel?
+    private var userOrder: OrderModel?
     
     let cartController: CartControllerProtocol
     let nftModel: NFTCollection
     var userURL: String?
     var nftArray: [Nft] = []
+    var profileModel: [ProfileModel] = []
     
     init(nftModel: NFTCollection, dataProvider: CollectionDataProvider, cartController: CartControllerProtocol) {
         self.nftModel = nftModel
@@ -52,6 +67,10 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         self.userProfile = profile
     }
     
+    func setUserOrder(_ order: OrderModel) {
+        self.userOrder = order
+    }
+    
     func loadUserProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         dataProvider.getUserProfile { [weak self] result in
             switch result {
@@ -59,7 +78,18 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 self?.setUserProfile(profileModel)
                 completion(.success(profileModel))
             case .failure(let error):
-                print("Error getting user profile: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func loadUserOrder(completion: @escaping (Result<OrderModel, Error>) -> Void) {
+        dataProvider.getUserOrder() { [weak self] result in
+            switch result {
+            case .success(let order):
+                self?.setUserOrder(order)
+                completion(.success(order))
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
@@ -75,8 +105,7 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
                 switch result {
                 case .success(let data):
                     nftArray.append(data)
-                case .failure(let error):
-                    print("loadNFTsError: ", error)
+                case .failure(_): break
                 }
                 group.leave()
             }
@@ -89,15 +118,19 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         
         self.loadUserProfile() { updateResult in
             switch updateResult {
-            case .success(let result):
-                self.nftArray = self.nftArray.map {
-                    var nft = $0
-                    nft.isLiked = result.likes?.contains(nft.id) ?? false
-                    return nft
-                }
-            case .failure(let error):
-                // TODO: Handle the error if needed
-                print("Error loading profile: \(error)")
+            case .success(_):
+                self.viewController?.reloadVisibleCells()
+            case .failure:
+                break
+            }
+        }
+        
+        self.loadUserOrder() { updateResult in
+            switch updateResult {
+            case .success(_):
+                self.viewController?.reloadVisibleCells()
+            case .failure:
+                break
             }
         }
     }
@@ -106,52 +139,50 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
         return self.userProfile?.likes?.contains { $0 == nftId } == true
     }
     
-    func toggleLikeStatus(model: Nft, _ setIsLiked: @escaping (Bool) -> Void) {
+    func isAlreadyInCart(nftId: String) -> Bool {
+        return self.userOrder?.nfts?.contains {$0 == nftId } == true
+    }
+    
+    func toggleLikeStatus(model: Nft) {
         guard let profileModel = self.userProfile else {
-            print("No User Profile :c")
             return
         }
-        let isAlreadyLiked = profileModel.likes?.contains { $0 == model.id } == true
         
-        let updatedLikes = isAlreadyLiked
+        let updatedLikes = self.isAlreadyLiked(nftId: model.id)
         ? profileModel.likes?.filter { $0 != model.id }
         : (profileModel.likes ?? []) + [model.id]
-        
-        setIsLiked(!isAlreadyLiked)
         
         let updatedProfileModel = profileModel.update(newLikes: updatedLikes)
         
         dataProvider.updateUserProfile(with: updatedProfileModel) { updateResult in
             switch updateResult {
             case .success(let result):
-                // TODO: Profile updated successfully and (save likes?)
                 self.setUserProfile(result)
-                print("Profile updated successfully: ", result)
-                
-                self.nftArray = self.nftArray.map {
-                    var nft = $0
-                    if nft.id == model.id {
-                        nft.isLiked = !isAlreadyLiked
-                    }
-                    return nft
-                }
-                self.viewController?.reloadCollectionView()
-            case .failure(let error):
-                // TODO: Handle the error if needed
-                print("Error updating profile: \(error)")
+                self.viewController?.reloadVisibleCells()
+            case .failure:
+                break
             }
         }
     }
     
     func toggleCartStatus(model: Nft) {
-        let itemInCart = cartController.cart.contains(where: { $0.id == model.id })
-        if itemInCart {
-            cartController.removeFromCart(model.id) {
-                // TODO: Handle item removal from cart
-            }
-        } else {
-            cartController.addToCart(model) {
-                // TODO: Handle item addition to cart
+        guard let orderModel = self.userOrder else {
+            return
+        }
+        
+        let updatedNfts = isAlreadyInCart(nftId: model.id)
+        ? orderModel.nfts?.filter { $0 != model.id }
+        : (orderModel.nfts ?? []) + [model.id]
+        
+        let updatedOrderModel = orderModel.update(newNfts: updatedNfts)
+        
+        dataProvider.updateUserOrder(with: updatedOrderModel) { updateResult in
+            switch updateResult {
+            case .success(let result):
+                self.setUserOrder(result)
+                self.viewController?.reloadVisibleCells()
+            case .failure:
+                break
             }
         }
     }
