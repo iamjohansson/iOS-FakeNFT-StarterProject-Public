@@ -26,3 +26,9 @@ struct ProfileModelEditing: Encodable {
     let website: String?
     let likes: [String]?
 }
+
+// MARK: User Model
+struct UserModel: Decodable {
+    let id: String
+    let name: String
+}

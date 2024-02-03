@@ -280,13 +280,13 @@ extension EditProfileViewController: EditProfileViewProtocol {
     func showError() {
         guard let window = UIApplication.shared.windows.first else { return }
         window.isUserInteractionEnabled = true
-        ProgressHUD.showError("Ошибка", delay: 1.5)
+        ProgressHUD.showError(Constants.hudError, delay: 1.5)
     }
     
     func showSuccess() {
         guard let window = UIApplication.shared.windows.first else { return }
         window.isUserInteractionEnabled = true
-        ProgressHUD.showSuccess("Данные пользователя обновлены", delay: 1.5)
+        ProgressHUD.showSuccess(Constants.hudSuccess, delay: 1.5)
     }
     
     func showError(error: Error) {
@@ -334,6 +334,8 @@ private extension EditProfileViewController {
         static let placeholdTextViewText = ""
         static let cornerRadius: CGFloat = 35
         static let dimmingModel = UIColor(hexString: "1A1B22").withAlphaComponent(0.5)
+        static let hudError = "Ошибка"
+        static let hudSuccess = "Данные пользователя обновлены"
         // Constraint
         static let baseSize70: CGFloat = 70
         static let baseSize42: CGFloat = 42

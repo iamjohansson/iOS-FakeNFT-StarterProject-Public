@@ -11,8 +11,10 @@ protocol ProfileViewPresenterProtocol {
     var delegate: ProfileViewControllerDelegate? { get set }
     var model: ProfileModel? { get }
     var profileService: ProfileServiceProtocol { get }
-    func getProfile()
+    func viewDidLoad()
     func saveInModel(profileModel: ProfileModel)
+    func getLikeArray() -> [String]
+    func getNftIdArray() -> [String]
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
@@ -25,17 +27,8 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
         self.profileService = profileService
     }
     
-    func getProfile() {
-        self.delegate?.showLoading()
-        profileService.loadProfile() { [weak self] result in
-            switch result {
-            case .success(let profile):
-                self?.delegate?.hideLoading()
-                self?.saveInModel(profileModel: profile)
-            case .failure(let error):
-                self?.delegate?.showError(error: error)
-            }
-        }
+    func viewDidLoad() {
+        getProfile()
     }
     
     func saveInModel(profileModel: ProfileModel) {
@@ -55,4 +48,25 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             }
         }
     }
+    
+    func getLikeArray() -> [String] {
+        return model?.likes ?? []
+    }
+    
+    func getNftIdArray() -> [String] {
+        return model?.nfts ?? []
+    }
+    
+    private func getProfile() {
+        self.delegate?.showLoading()
+        profileService.loadProfile() { [weak self] result in
+                switch result {
+                case .success(let profile):
+                    self?.delegate?.hideLoading()
+                    self?.saveInModel(profileModel: profile)
+                case .failure(let error):
+                    self?.delegate?.showError(error: error)
+                }
+            }
+        }
 }

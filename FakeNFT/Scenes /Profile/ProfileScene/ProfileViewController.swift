@@ -93,6 +93,11 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private var onImageLoaded: ((UIImage) -> Void)?
     
     // MARK: Lifecycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewDidLoad()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
@@ -101,7 +106,6 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
         addSubView()
         applyConstraint()
         setupDelegates()
-        presenter.getProfile()
     }
     
     init(presenter: ProfileViewPresenterProtocol) {
@@ -114,7 +118,6 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     // MARK: Methods
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -217,18 +220,14 @@ extension ProfileViewController: UITableViewDelegate {
         let index = indexPath.row
         switch index {
         case 0:
-            return
-            // TODO: Переход на экраны Коллекции, избранных, разработчика (Эпик 3/3)
+            let likeNFT = presenter.getLikeArray()
+            let nftId = presenter.getNftIdArray()
+            navigateToMyNft(likedNFT: likeNFT, nftId: nftId)
         case 1:
-            return
-            // TODO: Переход на экраны Коллекции, избранных, разработчика (Эпик 3/3)
+            let likeNFT = presenter.getLikeArray()
+            navigateToFavorNFT(likedNft: likeNFT)
         case 2:
-            // временно, для перехода на работающую Web-страницу и отладки
-            if let url = URL(string: "https://github.com/iamjohansson") {
-                let webVC = WebViewController(url: url)
-                webVC.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(webVC, animated: true)
-            }
+            navigateToDeveloper()
         default:
             break
         }
@@ -308,10 +307,31 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
     }
 }
 
+// MARK: - ProfileVC Navigate
+private extension ProfileViewController {
+    func navigateToMyNft(likedNFT: [String], nftId: [String]) {
+        let vc = MyNFTViewController(likedNFT: likedNFT, nftId: nftId)
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToFavorNFT(likedNft: [String]) {
+        let vc = FavoritesNFTViewController(likedNFT: likedNft)
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func navigateToDeveloper() {
+        let vc = DeveloperViewController()
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
 // MARK: - Constants
 private extension ProfileViewController {
     enum TableViewConstants {
-        static let myNFT = "Мой NFT "
+        static let myNFT = "Мои NFT "
         static let myFavorite = "Избранные NFT "
         static let about = "О разработчике"
         static let bracket1st = "("
