@@ -16,8 +16,14 @@ final class TabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //to present a future hierarchy of view controllers in tab bar interface
+        let profileNC = UINavigationController(
+            rootViewController: appConfiguration.profileViewControlle)
+        profileNC.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("Tab.profile", comment: ""),
+            image: UIImage(named: "profileBar"),
+            selectedImage: nil
+        )
+
         let catalogNC = UINavigationController(
             rootViewController: appConfiguration.catalogViewController)
         catalogNC.tabBarItem = UITabBarItem(
@@ -26,7 +32,7 @@ final class TabBarController: UITabBarController {
             tag: 0
         )
         
-        viewControllers = [catalogNC]
+        viewControllers = [profileNC, catalogNC]
         
         tabBar.isTranslucent = false
         view.tintColor = .ypBlueUn
