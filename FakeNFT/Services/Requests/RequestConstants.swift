@@ -3,6 +3,6 @@ enum RequestConstants {
 }
 
 enum URLType {
-    static let prod = "https://d5d1qcn3o3c5g9qilcsn.apigw.yandexcloud.net"
+    static let mock = "https://64858e8ba795d24810b71189.mockapi.io"
     static let test = "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net"
 }

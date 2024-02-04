@@ -13,4 +13,6 @@ extension UIFont {
     static var sfProRegular13 = UIFont(name: "SFProText-Regular", size: 13)
     static var sfProRegular15 = UIFont(name: "SFProText-Regular", size: 15)
     static var sfProLight10 = UIFont(name: "SFProText-Regular", size: 10)
+    static var sfProRegular17 = UIFont(name: "SFProText-Regular", size: 17)
+    static var sfProMedium10 = UIFont(name: "SFProText-Medium", size: 10)
 }
