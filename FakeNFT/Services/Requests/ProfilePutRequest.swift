@@ -1,5 +1,5 @@
 //
-//  ProfileUpdateRequest.swift
+//  ProfilePutRequest.swift
 //  FakeNFT
 //
 //  Created by Ivan Zhoglov on 21.01.2024.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileUpdateRequest: NetworkRequest {
+struct ProfilePutRequest: NetworkRequest {
     
     let profileModel: ProfileModelEditing
     init(profileModel: ProfileModelEditing) {

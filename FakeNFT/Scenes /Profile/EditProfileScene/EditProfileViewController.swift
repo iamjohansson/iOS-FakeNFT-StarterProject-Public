@@ -9,8 +9,8 @@ import UIKit
 import ProgressHUD
 
 protocol EditProfileViewProtocol: AnyObject {
-    var currentProfile: ProfileModel? { get set }
-    func updateProfile(with profile: ProfileModel)
+    var currentProfile: ProfileModels? { get set }
+    func updateProfile(with profile: ProfileModels)
     func showLoading()
     func hideLoading()
     func showSuccess()
@@ -25,7 +25,7 @@ protocol EditProfileViewControllerDelegate: AnyObject {
 final class EditProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Properties & UI Elements
-    var currentProfile: ProfileModel? {
+    var currentProfile: ProfileModels? {
         didSet {
             updateUIProfile()
         }
@@ -260,7 +260,7 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
 
 // MARK: - EditProfileProtocol
 extension EditProfileViewController: EditProfileViewProtocol {
-    func updateProfile(with profile: ProfileModel) {
+    func updateProfile(with profile: ProfileModels) {
         nameStack.updateText(profile.name)
         descriptionStack.updateText(profile.description ?? "")
         webLinkStack.updateText(profile.website ?? "")

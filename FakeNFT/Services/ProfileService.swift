@@ -7,11 +7,11 @@
 
 import Foundation
 
-typealias ProfileCompletion = (Result<ProfileModel, Error>) -> Void
+typealias ProfileCompletion = (Result<ProfileModels, Error>) -> Void
 
 protocol ProfileServiceProtocol {
     func loadProfile(completion: @escaping ProfileCompletion)
-    func updateProfile(profile: ProfileModelEditing, completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func updateProfile(profile: ProfileModelEditing, completion: @escaping (Result<ProfileModels, Error>) -> Void)
     func loadNFTs(completion: @escaping (Result<[NFTModel], Error>) -> Void)
     func loadUser(userId: String, completion: @escaping (Result<UserModel, Error>) -> Void)
     func loadAllNfts(completion: @escaping (Result<[NFTModel], Error>) -> Void)
@@ -30,7 +30,7 @@ final class ProfileService: ProfileServiceProtocol {
     func loadProfile(completion: @escaping ProfileCompletion) {
         
         let request = ProfileRequest()
-        networkClient.send(request: request, type: ProfileModel.self) { [weak storage] result in
+        networkClient.send(request: request, type: ProfileModels.self) { [weak storage] result in
             switch result {
             case .success(let profile):
                 storage?.saveProfile(profile)
@@ -42,8 +42,8 @@ final class ProfileService: ProfileServiceProtocol {
     }
     
     func updateProfile(profile: ProfileModelEditing, completion: @escaping ProfileCompletion) {
-        let request = ProfileUpdateRequest(profileModel: profile)
-        networkClient.send(request: request, type: ProfileModel.self) { [weak storage] result in
+        let request = ProfilePutRequest(profileModel: profile)
+        networkClient.send(request: request, type: ProfileModels.self) { [weak storage] result in
             switch result {
             case .success(let profile):
                 storage?.saveProfile(profile)

@@ -1,5 +1,5 @@
 //
-//  ProfileModel.swift
+//  ProfileModels.swift
 //  FakeNFT
 //
 //  Created by Ivan Zhoglov on 16.01.2024.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 // MARK: Network Model
-struct ProfileModel: Codable {
+struct ProfileModels: Codable {
     let name: String
     let avatar: String?
     let description: String?

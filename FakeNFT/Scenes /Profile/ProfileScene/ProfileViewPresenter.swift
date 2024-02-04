@@ -9,10 +9,10 @@ import Foundation
 
 protocol ProfileViewPresenterProtocol {
     var delegate: ProfileViewControllerDelegate? { get set }
-    var model: ProfileModel? { get }
+    var model: ProfileModels? { get }
     var profileService: ProfileServiceProtocol { get }
     func viewDidLoad()
-    func saveInModel(profileModel: ProfileModel)
+    func saveInModel(profileModel: ProfileModels)
     func getLikeArray() -> [String]
     func getNftIdArray() -> [String]
 }
@@ -21,7 +21,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     
     internal weak var delegate: ProfileViewControllerDelegate?
     internal var profileService: ProfileServiceProtocol
-    private (set) var model: ProfileModel? = nil
+    private (set) var model: ProfileModels? = nil
     
     init(profileService: ProfileServiceProtocol) {
         self.profileService = profileService
@@ -31,9 +31,9 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
         getProfile()
     }
     
-    func saveInModel(profileModel: ProfileModel) {
+    func saveInModel(profileModel: ProfileModels) {
         DispatchQueue.global(qos: .utility).async { [weak self] in
-            let profileUIModel = ProfileModel(
+            let profileUIModel = ProfileModels(
                 name: profileModel.name,
                 avatar: profileModel.avatar,
                 description: profileModel.description,

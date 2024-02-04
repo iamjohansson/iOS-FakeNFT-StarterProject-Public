@@ -1,5 +1,5 @@
 //
-//  UIFont + Extension.swift
+//  UIFont + Extensions.swift
 //  FakeNFT
 //
 //  Created by Almira Khafizova on 21.01.24.

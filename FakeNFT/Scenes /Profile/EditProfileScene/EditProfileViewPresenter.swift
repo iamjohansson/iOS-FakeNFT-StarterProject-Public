@@ -14,7 +14,7 @@ protocol EditProfilePresenterProtocol: AnyObject {
 }
 
 protocol EditProfilePresenterDelegate: AnyObject {
-    func profileDidUpdate(_ profile: ProfileModel)
+    func profileDidUpdate(_ profile: ProfileModels)
 }
 
 final class EditProfileViewPresenter: EditProfilePresenterProtocol {

@@ -1,5 +1,5 @@
 //
-//  WebViewController.swift
+//  WebsViewController.swift
 //  FakeNFT
 //
 //  Created by Ivan Zhoglov on 17.01.2024.
@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-final class WebViewController: UIViewController {
+final class WebsViewController: UIViewController {
     
     private lazy var barButton: UIBarButtonItem = {
         let button = UIBarButtonItem()

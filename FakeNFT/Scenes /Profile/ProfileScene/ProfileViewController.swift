@@ -176,7 +176,7 @@ final class ProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 urlString = "https://" + urlString
             }
             if let url = URL(string: urlString) {
-                let webVC = WebViewController(url: url)
+                let webVC = WebsViewController(url: url)
                 webVC.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(webVC, animated: true)
             }
@@ -294,7 +294,7 @@ extension ProfileViewController: ProfileViewControllerDelegate {
 }
 
 extension ProfileViewController: EditProfilePresenterDelegate {
-    func profileDidUpdate(_ profile: ProfileModel) {
+    func profileDidUpdate(_ profile: ProfileModels) {
         presenter.saveInModel(profileModel: profile)
     }
 }

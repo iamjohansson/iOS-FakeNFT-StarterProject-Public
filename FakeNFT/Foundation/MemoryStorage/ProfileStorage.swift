@@ -8,22 +8,22 @@
 import Foundation
 
 protocol ProfileStorageProtocol: AnyObject {
-    func saveProfile(_ profile: ProfileModel)
-    func getProfile() -> ProfileModel?
+    func saveProfile(_ profile: ProfileModels)
+    func getProfile() -> ProfileModels?
 }
 
 final class ProfileStorage: ProfileStorageProtocol {
-    private var profile: ProfileModel?
+    private var profile: ProfileModels?
 
     private let syncQueue = DispatchQueue(label: "sync-profile-queue")
     
-    func saveProfile(_ profile: ProfileModel) {
+    func saveProfile(_ profile: ProfileModels) {
         syncQueue.async { [weak self] in
             self?.profile = profile
         }
     }
     
-    func getProfile() -> ProfileModel? {
+    func getProfile() -> ProfileModels? {
         syncQueue.sync { [weak self] in
             return self?.profile
         }
