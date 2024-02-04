@@ -42,16 +42,14 @@ final class CatalogСollectionPresenter: CatalogСollectionPresenterProtocol {
     private var userProfile: ProfileModel?
     private var userOrder: OrderModel?
     
-    let cartController: CartControllerProtocol
     let nftModel: NFTCollection
     var userURL: String?
     var nftArray: [Nft] = []
     var profileModel: [ProfileModel] = []
     
-    init(nftModel: NFTCollection, dataProvider: CollectionDataProvider, cartController: CartControllerProtocol) {
+    init(nftModel: NFTCollection, dataProvider: CollectionDataProvider) {
         self.nftModel = nftModel
         self.dataProvider = dataProvider
-        self.cartController = cartController
     }
     
     func presentCollectionViewData() {

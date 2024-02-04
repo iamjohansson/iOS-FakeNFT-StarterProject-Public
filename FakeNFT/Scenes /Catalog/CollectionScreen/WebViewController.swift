@@ -10,6 +10,13 @@ import WebKit
 import Combine
 
 final class WebViewController: UIViewController {
+    private lazy var barButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
+        button.image = UIImage(named: "backward")
+        button.action = #selector(didTapBackButton)
+        button.target = self
+        return button
+    }()
     
     private lazy var webView: WKWebView = {
         let view = WKWebView()
@@ -36,6 +43,8 @@ final class WebViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         setupUI()
+        navigationItem.leftBarButtonItem = barButton
+        navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         presenter.viewDidLoad()
         loadWebView(with: url)
         

@@ -4,6 +4,11 @@
 "Tab.cart" = "Cart";
 "Tab.statistics" = "Statistics";
 
+// ProfileButtons
+"myNFTLabel" = "My NFTs";
+"favoritesNFTLabel" = "Favorite NFTs";
+"aboutDeveloperLabel" = "About Developer";
+
 // CatalogVC
 "catalogSorting" = "Sorting";
 "catalogSortByName" = "By Name";
@@ -18,3 +23,9 @@
 "Error.unknown" = "Error is unknown";
 "Error.repeat" = "Try again";
 "Error.title" = "Error";
+
+//PriceNamePlaceholder
+"priceNamePlaceholder" = "Price";
+
+//Prepositions
+"from" = "From";

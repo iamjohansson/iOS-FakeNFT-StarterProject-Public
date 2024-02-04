@@ -332,10 +332,10 @@ private extension ProfileViewController {
 // MARK: - Constants
 private extension ProfileViewController {
     enum TableViewConstants {
-        static let myNFT = "Мои NFT "
-        static let myFavorite = "Избранные NFT "
-        static let about = "О разработчике"
-        static let bracket1st = "("
+        static let myNFT = AppStrings.ProfileButtons.myNFTLabel
+        static let myFavorite = AppStrings.ProfileButtons.favoritesNFTLabel
+        static let about = AppStrings.ProfileButtons.aboutDeveloperLabel
+        static let bracket1st = " ("
         static let bracket2nd = ")"
         static let cellHeight: CGFloat = 54
         static let numberOfRowInSec = 3

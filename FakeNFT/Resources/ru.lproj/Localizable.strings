@@ -4,6 +4,11 @@
 "Tab.cart" = "Корзина";
 "Tab.statistics" = "Статистика";
 
+// ProfileButtons
+"myNFTLabel" = "Мои NFT";
+"favoritesNFTLabel" = "Избранные NFT";
+"aboutDeveloperLabel" = "О разработчике";
+
 // CatalogVC
 "catalogSorting" = "Cортировка";
 "catalogSortByName" = "По названию";
@@ -18,3 +23,9 @@
 "Error.unknown" = "Произошла неизвестная ошибка";
 "Error.repeat" = "Повторить";
 "Error.title" = "Ошибка";
+
+//PriceNamePlaceholder
+"priceNamePlaceholder" = "Цена";
+
+//Prepositions
+"from" = "От";

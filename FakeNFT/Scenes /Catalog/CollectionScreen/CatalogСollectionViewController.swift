@@ -209,7 +209,6 @@ final class CatalogСollectionViewController: UIViewController {
         if let url = URL(string: urlString) {
             let webPresenter = WebViewPresenter()
             let webVC = WebViewController(presenter: webPresenter, url: url)
-            setupNavBackButton()
             webVC.hidesBottomBarWhenPushed = true
             navigationItem.backBarButtonItem =  UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             navigationController?.pushViewController(webVC, animated: true)

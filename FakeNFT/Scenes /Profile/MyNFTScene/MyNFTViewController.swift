@@ -81,7 +81,7 @@ final class MyNFTViewController: UIViewController {
     
     private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: UIConstants.backButtonImage),
+            image: UIImage(named: UIConstants.backButtonImage),
             style: .plain,
             target: self,
             action: #selector(didTapExitButton)
@@ -214,9 +214,9 @@ extension MyNFTViewController: MyNFTCellDelegate {
 private extension MyNFTViewController {
     enum UIConstants {
         static let placeholder = "У Вас ещё нет NFT"
-        static let backButtonImage = "chevron.backward"
+        static let backButtonImage = "backward"
         static let filterImage = "filter"
-        static let title = "Мои NFT"
+        static let title = AppStrings.ProfileButtons.myNFTLabel
         static let inset20: CGFloat = 20
         static let heightRow: CGFloat = 140
         static let zero: Int = 0

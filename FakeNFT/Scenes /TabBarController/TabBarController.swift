@@ -17,22 +17,39 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let profileNC = UINavigationController(
-            rootViewController: appConfiguration.profileViewControlle)
+            rootViewController: appConfiguration.profileViewController)
         profileNC.tabBarItem = UITabBarItem(
-            title: NSLocalizedString("Tab.profile", comment: ""),
+            title: AppStrings.TabBarController.profileTabBarTitle,
             image: UIImage(named: "profileBar"),
             selectedImage: nil
         )
 
         let catalogNC = UINavigationController(
             rootViewController: appConfiguration.catalogViewController)
-        catalogNC.tabBarItem = UITabBarItem(
-            title: NSLocalizedString("Tab.catalog", comment: ""),
+        appConfiguration.catalogViewController.tabBarItem = UITabBarItem(
+            title: AppStrings.TabBarController.catalogTabBarTitle,
             image: UIImage(named:"catalogBar"),
-            tag: 0
+            selectedImage: nil
         )
         
-        viewControllers = [profileNC, catalogNC]
+        appConfiguration.cartViewController?.tabBarItem = UITabBarItem(
+            title: AppStrings.TabBarController.cartTabBarTitle,
+            image: UIImage(named: "backetBar"),
+            selectedImage: nil
+        )
+        
+        appConfiguration.statisticViewController?.tabBarItem = UITabBarItem(
+            title: AppStrings.TabBarController.statisticTabBarTitle,
+            image: UIImage(named: "statisticBar"),
+            selectedImage: nil
+        )
+        
+        viewControllers = [
+            profileNC,
+            catalogNC,
+            appConfiguration.cartViewController ?? UIViewController(),
+            appConfiguration.statisticViewController ?? UIViewController()
+        ]
         
         tabBar.isTranslucent = false
         view.tintColor = .ypBlueUn

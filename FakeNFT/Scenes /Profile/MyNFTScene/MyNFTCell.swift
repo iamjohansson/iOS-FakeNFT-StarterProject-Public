@@ -120,7 +120,7 @@ final class MyNFTCell: UITableViewCell {
         
         nameLabel.text = nft.name
         ratingView.configureRating(nft.rating)
-        ownerLabel.text = "От \(nft.authorName ?? Constants.ownerPlaceholder)"
+        ownerLabel.text = "\(AppStrings.Prepositions.prepositionFrom) \(nft.authorName ?? Constants.ownerPlaceholder)"
         priceLabel.text = "\(nft.price) \(Constants.currency)"
     }
     func configureLikeInCell(isLiked: Bool) {
@@ -178,7 +178,7 @@ private extension MyNFTCell {
         static let imagePlaceholder = "photo.fill"
         static let namePlaceholder = "Name"
         static let ownerPlaceholder = "Yandex \nStudent"
-        static let priceNamePlaceholder = "Цена"
+        static let priceNamePlaceholder = AppStrings.MyNftsPrice.nftPrice
         static let pricePlaceholder = "0,00"
         static let authorPlaceholder = "Admin"
         static let currency = "ETH"

@@ -62,12 +62,12 @@ class DeveloperViewController: UIViewController {
     
     private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "chevron.backward"),
+            image: UIImage(named: "backward"),
             style: .plain,
             target: self,
             action: #selector(didTapExitButton)
         )
-        navigationItem.title = "О разработчике"
+        navigationItem.title = AppStrings.ProfileButtons.aboutDeveloperLabel
         navigationController?.navigationBar.tintColor = .ypBlack
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.sfProBold17 ?? UIFont.systemFont(ofSize: 17)

@@ -7,10 +7,13 @@
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 // MARK: - Protocol
 
 protocol CatalogViewControllerProtocol: AnyObject {
+    func showLoading()
+    func hideLoading()
     func reloadTableView()
 }
 
@@ -44,11 +47,8 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
         return tableView
     }()
     
-    private let cartService: CartControllerProtocol
-    
-    init(presenter: CatalogPresenterProtocol, cartService: CartControllerProtocol) {
+    init(presenter: CatalogPresenterProtocol) {
         self.presenter = presenter
-        self.cartService = cartService
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -84,6 +84,21 @@ final class CatalogViewController: UIViewController, CatalogViewControllerProtoc
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
+    }
+    
+    func showLoading() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        window.isUserInteractionEnabled = false
+        ProgressHUD.animationType = .circleRotateChase
+        ProgressHUD.colorAnimation = .ypBlack
+        ProgressHUD.colorHUD = .lightGray.withAlphaComponent(0.1)
+        ProgressHUD.show()
+    }
+    
+    func hideLoading() {
+        guard let window = UIApplication.shared.windows.first else { return }
+        window.isUserInteractionEnabled = true
+        ProgressHUD.dismiss()
     }
     
     func reloadTableView() {
@@ -142,7 +157,7 @@ extension CatalogViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nftModel = presenter.getDataSource()[indexPath.row]
         let dataProvider = CollectionDataProvider(networkClient: DefaultNetworkClient())
-        let presenter = CatalogСollectionPresenter(nftModel: nftModel, dataProvider: dataProvider, cartController: cartService)
+        let presenter = CatalogСollectionPresenter(nftModel: nftModel, dataProvider: dataProvider)
         let viewController = CatalogСollectionViewController(presenter: presenter)
         viewController.hidesBottomBarWhenPushed = true
         

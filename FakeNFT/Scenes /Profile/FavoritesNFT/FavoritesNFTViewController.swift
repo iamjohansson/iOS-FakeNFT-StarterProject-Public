@@ -82,7 +82,7 @@ final class FavoritesNFTViewController: UIViewController {
     // MARK: Methods    
     private func setupNavBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: Constants.backButtonImage),
+            image: UIImage(named: Constants.backButtonImage),
             style: .plain,
             target: self,
             action: #selector(didTapExitButton)
@@ -197,8 +197,8 @@ extension FavoritesNFTViewController: FavoritesNFTCellDelegate {
 // MARK: - Constants
 private extension FavoritesNFTViewController {
     enum Constants {
-        static let title = "Избранные NFT"
-        static let backButtonImage = "chevron.backward"
+        static let title = AppStrings.ProfileButtons.favoritesNFTLabel
+        static let backButtonImage = "backward"
         static let placeholder = "У Вас ещё нет избранных NFT"
     }
     

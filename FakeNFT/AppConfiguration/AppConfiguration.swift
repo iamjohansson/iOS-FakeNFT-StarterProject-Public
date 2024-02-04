@@ -8,10 +8,11 @@
 import UIKit
 
 final class AppConfiguration {
-    let profileViewControlle: UIViewController
+    let profileViewController: UIViewController
     let catalogViewController: UIViewController
+    let cartViewController: UIViewController?
+    let statisticViewController: UIViewController?
     private let catalogNavigationController: UINavigationController
-    private let cartService: CartControllerProtocol
     
     init() {
         let networkClient = DefaultNetworkClient()
@@ -19,13 +20,15 @@ final class AppConfiguration {
         let profileService = ProfileService(networkClient: networkClient, storage: storage)
         let profilePresenter = ProfileViewPresenter(profileService: profileService)
         
-        profileViewControlle = ProfileViewController(presenter: profilePresenter)
+        profileViewController = ProfileViewController(presenter: profilePresenter)
         
         let dataProvider = CatalogDataProvider(networkClient: DefaultNetworkClient())
         let catalogPresenter = CatalogPresenter(dataProvider: dataProvider)
-        cartService = CartService()
         
-        catalogViewController = CatalogViewController(presenter: catalogPresenter, cartService: cartService)
+        catalogViewController = CatalogViewController(presenter: catalogPresenter)
         catalogNavigationController = UINavigationController(rootViewController: catalogViewController)
+        
+        cartViewController = UIViewController()
+        statisticViewController = UIViewController()
     }
 }

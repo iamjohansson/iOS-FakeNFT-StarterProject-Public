@@ -12,7 +12,7 @@ final class WebsViewController: UIViewController {
     
     private lazy var barButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
-        button.image = UIImage(systemName: "chevron.backward")
+        button.image = UIImage(named: "backward")
         button.action = #selector(didTapBackButton)
         button.target = self
         return button
@@ -34,6 +34,7 @@ final class WebsViewController: UIViewController {
         super.viewDidLoad()
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
+        view.backgroundColor = .ypWhite
         navigationItem.leftBarButtonItem = barButton
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         
