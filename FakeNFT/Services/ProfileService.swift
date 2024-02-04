@@ -66,7 +66,7 @@ final class ProfileService: ProfileServiceProtocol {
     
     func loadAllNfts(completion: @escaping (Result<[NFTModel], Error>) -> Void) {
         let request = NFTRequestForProfile()
-        networkClient.send(request: request, type: [NFTModel].self, completionQueue: .main) { result in
+        networkClient.send(request: request, type: [NFTModel].self) { result in
             switch result {
             case .success(let nfts):
                 completion(.success(nfts))

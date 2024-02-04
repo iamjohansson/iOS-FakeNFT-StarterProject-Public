@@ -120,12 +120,14 @@ final class MyNFTViewPresenter {
     private func getAllNFTs() {
         profileService?.loadAllNfts { [weak self] result in
             guard let self else { return }
-            switch result {
-            case .success(let nfts):
-                self.nftModel = nfts
-                self.view?.update(with: self.nftModel)
-            case .failure(let error):
-                self.view?.showError(error: error)
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let nfts):
+                    self.nftModel = nfts
+                    self.view?.update(with: self.nftModel)
+                case .failure(let error):
+                    self.view?.showError(error: error)
+                }
             }
         }
     }

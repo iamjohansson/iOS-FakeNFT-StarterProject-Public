@@ -7,6 +7,7 @@
 
 import UIKit
 import ProgressHUD
+import Kingfisher
 
 protocol EditProfileViewProtocol: AnyObject {
     var currentProfile: ProfileModels? { get set }
@@ -124,6 +125,7 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter?.loadProfile()
+        setImage()
     }
     
     override func viewDidLoad() {
@@ -197,6 +199,24 @@ final class EditProfileViewController: UIViewController, UIGestureRecognizerDele
             webLinkStack.trailingAnchor.constraint(equalTo: descriptionStack.trailingAnchor),
             webLinkStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.baseOffset24)
         ])
+    }
+    
+    private func setImage() {
+        ImageCache.default.retrieveImage(forKey: "avatarImage", options: nil) { [weak self] result in
+            switch result {
+            case .success(let cache):
+                if let cacheImage = cache.image {
+                    self?.avatarImage.image = self?.userImage
+                } else {
+                    guard let avatar = self?.currentProfile?.avatar else { return }
+                    let proc = RoundCornerImageProcessor(cornerRadius: Constants.cornerRadius)
+                    self?.avatarImage.kf.indicatorType = .activity
+                    self?.avatarImage.kf.setImage(with: URL(string: avatar), options: [.processor(proc)])
+                }
+            case .failure(let error):
+                assertionFailure("Error retrieving from cache: \(error)")
+            }
+        }
     }
     
     private func updateUIProfile() {

@@ -60,6 +60,7 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     private func getProfile() {
         self.delegate?.showLoading()
         profileService.loadProfile() { [weak self] result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let profile):
                     self?.delegate?.hideLoading()
@@ -69,4 +70,5 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
                 }
             }
         }
+    }
 }
