@@ -4,10 +4,29 @@
 "Tab.cart" = "Cart";
 "Tab.statistics" = "Statistics";
 
+// ProfileEditVC
+"avatarLabel" = "Change \nphoto";
+"nameEdit" = "Name";
+"descriptionEdit" = "Description";
+"websiteEdit" = "Website";
+"profileUpdatedSuccessfully" = "Profile was updated successfully";
+"error" = "Error";
+
+//ProfileSortNfts
+"filter" = "Sorting";
+"filterByPrice" = "By Price";
+"filterByRating" = "By Rating";
+"filterByName" = "By Name";
+"closeLabel" = "Close";
+
 // ProfileButtons
 "myNFTLabel" = "My NFTs";
 "favoritesNFTLabel" = "Favorite NFTs";
 "aboutDeveloperLabel" = "About Developer";
+
+//AboutDevelopers
+"catalogCreator" = "Catalogue: Almira Khafizova";
+"profileCreator" = "Profile: Ivan Zhoglov";
 
 // CatalogVC
 "catalogSorting" = "Sorting";

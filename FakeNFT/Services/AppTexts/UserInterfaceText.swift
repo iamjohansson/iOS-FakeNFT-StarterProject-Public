@@ -24,6 +24,45 @@ struct AppStrings {
         }
     }
     
+    struct ProfileEditVC {
+        static var avatarLabel: String {
+            return NSLocalizedString("avatarLabel", comment: "")
+        }
+        static var nameEdit: String {
+            return NSLocalizedString("nameEdit", comment: "")
+        }
+        static var descriptionEdit: String {
+            return NSLocalizedString("descriptionEdit", comment: "")
+        }
+        static var websiteEdit: String {
+            return NSLocalizedString("websiteEdit", comment: "")
+        }
+        static var profileUpdatedSuccessfully: String {
+            return NSLocalizedString("profileUpdatedSuccessfully", comment: "")
+        }
+        static var error: String {
+            return NSLocalizedString("error", comment: "")
+        }
+    }
+    
+    struct ProfileSortNfts {
+        static var filter: String {
+            return NSLocalizedString("filter", comment: "")
+        }
+        static var filterByPrice: String {
+            return NSLocalizedString("filterByPrice", comment: "")
+        }
+        static var filterByRating: String {
+            return NSLocalizedString("filterByRating", comment: "")
+        }
+        static var filterByName: String {
+            return NSLocalizedString("filterByName", comment: "")
+        }
+        static var closeLabel: String {
+            return NSLocalizedString("closeLabel", comment: "")
+        }
+    }
+    
     struct ProfileButtons {
         static var myNFTLabel: String {
             return NSLocalizedString("myNFTLabel", comment: "")
@@ -33,6 +72,15 @@ struct AppStrings {
         }
         static var aboutDeveloperLabel: String {
             return NSLocalizedString("aboutDeveloperLabel", comment: "")
+        }
+    }
+    
+    struct AboutDevelopers {
+        static var catalogCreator: String {
+            return NSLocalizedString("catalogCreator", comment: "")
+        }
+        static var profileCreator: String {
+            return NSLocalizedString("profileCreator", comment: "")
         }
     }
     
@@ -67,6 +115,5 @@ struct AppStrings {
         static var prepositionFrom: String {
             return NSLocalizedString("from", comment: "")
         }
-        
     }
 }

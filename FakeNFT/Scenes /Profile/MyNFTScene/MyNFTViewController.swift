@@ -223,10 +223,10 @@ private extension MyNFTViewController {
     }
     
     enum SortConstants {
-        static let message = "Сортировка"
-        static let price = "По цене"
-        static let rating = "По рейтингу"
-        static let name = "По названию"
-        static let cancel = "Закрыть"
+        static let message = AppStrings.ProfileSortNfts.filter
+        static let price = AppStrings.ProfileSortNfts.filterByPrice
+        static let rating = AppStrings.ProfileSortNfts.filterByRating
+        static let name = AppStrings.ProfileSortNfts.filterByName
+        static let cancel = AppStrings.ProfileSortNfts.closeLabel
     }
 }

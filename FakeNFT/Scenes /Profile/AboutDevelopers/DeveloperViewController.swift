@@ -21,7 +21,7 @@ class DeveloperViewController: UIViewController {
     private let developerLabelFirst: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Каталог: Альмира Хафизова"
+        label.text = AppStrings.AboutDevelopers.catalogCreator
         label.font = .sfProBold22
         label.textAlignment = .center
         return label
@@ -39,7 +39,7 @@ class DeveloperViewController: UIViewController {
     private let developerLabelSecond: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Профиль: Иван Жоглов"
+        label.text = AppStrings.AboutDevelopers.profileCreator
         label.font = .sfProBold22
         label.textAlignment = .center
         return label
@@ -71,10 +71,10 @@ class DeveloperViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .ypBlack
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.font: UIFont.sfProBold17 ?? UIFont.systemFont(ofSize: 17)
-             ]
+        ]
         navigationController?.navigationBar.titleTextAttributes = [
-             NSAttributedString.Key.foregroundColor: UIColor.ypBlack
-         ]
+            NSAttributedString.Key.foregroundColor: UIColor.ypBlack
+        ]
     }
     
     private func setup() {

@@ -348,15 +348,15 @@ private extension EditProfileViewController {
         // UI Helper
         static let closeButton = "xmark"
         static let placeholderImage = "person.circle"
-        static let textForAvatarLabel = "Сменить фото"
-        static let nameLabelText = "Имя"
-        static let descriptionLabelText = "Описание"
-        static let webLinkLabelText = "Сайт"
+        static let textForAvatarLabel = AppStrings.ProfileEditVC.avatarLabel
+        static let nameLabelText = AppStrings.ProfileEditVC.nameEdit
+        static let descriptionLabelText = AppStrings.ProfileEditVC.descriptionEdit
+        static let webLinkLabelText = AppStrings.ProfileEditVC.websiteEdit
         static let placeholdTextViewText = ""
         static let cornerRadius: CGFloat = 35
         static let dimmingModel = UIColor(hexString: "1A1B22").withAlphaComponent(0.5)
-        static let hudError = "Ошибка"
-        static let hudSuccess = "Данные пользователя обновлены"
+        static let hudError = AppStrings.ProfileEditVC.error
+        static let hudSuccess = AppStrings.ProfileEditVC.profileUpdatedSuccessfully
         // Constraint
         static let baseSize70: CGFloat = 70
         static let baseSize42: CGFloat = 42

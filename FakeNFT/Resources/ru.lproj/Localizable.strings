@@ -4,10 +4,29 @@
 "Tab.cart" = "Корзина";
 "Tab.statistics" = "Статистика";
 
+// ProfileEditVC
+"avatarLabel" = "Cменить\nфото";
+"nameEdit" = "Имя";
+"descriptionEdit" = "Описание";
+"websiteEdit" = "Сайт";
+"profileUpdatedSuccessfully" = "Данные пользователя обновлены";
+"error" = "Ошибка";
+
+//ProfileSortNfts
+"filter" = "Сортировка";
+"filterByPrice" = "По цене";
+"filterByRating" = "По рейтингу";
+"filterByName" = "По названию";
+"closeLabel" = "Закрыть";
+
 // ProfileButtons
 "myNFTLabel" = "Мои NFT";
 "favoritesNFTLabel" = "Избранные NFT";
 "aboutDeveloperLabel" = "О разработчике";
+
+//AboutDevelopers
+"catalogCreator" = "Каталог: Альмира Хафизова";
+"profileCreator" = "Профиль: Иван Жоглов";
 
 // CatalogVC
 "catalogSorting" = "Cортировка";
