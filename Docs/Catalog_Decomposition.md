@@ -1,9 +1,13 @@
 # Альмира Хафизова
 
 Архитектура проекта: MVP
+
 Верстка UI: в коде
+
 Task-tracker: https://github.com/users/iamjohansson/projects/2/views/2
+
 Screen Cast: https://cloud.mail.ru/public/tsoZ/7F7uBY8Q1
+
 Эпик: Каталог
 
 # Decomposition (Catalog)
