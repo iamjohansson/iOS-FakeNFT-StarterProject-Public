@@ -1,5 +1,7 @@
 # ТЗ мобильного приложения FakeNFT
 
+# Скринкаст эпика Профиля
+[![Watch the video](https://disk.yandex.ru/i/6vFGXk3oN3MeIg)
 # Ссылки
 
 [Дизайн Figma](https://www.figma.com/file/k1LcgXHGTHIeiCv4XuPbND/FakeNFT-(YP)?node-id=96-5542&t=YdNbOI8EcqdYmDeg-0)
