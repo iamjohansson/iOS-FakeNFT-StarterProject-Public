@@ -77,6 +77,7 @@ final class FavoritesNFTViewController: UIViewController {
         applyConstraint()
         presenter.view = self
         presenter.viewDidLoad()
+        addSwipeToPreviousViewControllerGesture()
     }
     
     // MARK: Methods    

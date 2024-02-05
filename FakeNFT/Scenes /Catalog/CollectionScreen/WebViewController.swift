@@ -49,6 +49,7 @@ final class WebViewController: UIViewController {
         loadWebView(with: url)
         
         bind()
+        addSwipeToPreviousViewControllerGesture()
     }
     
     required init?(coder: NSCoder) {

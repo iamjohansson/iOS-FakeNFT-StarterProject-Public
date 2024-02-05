@@ -47,6 +47,7 @@ final class WebsViewController: UIViewController {
         
         let request = URLRequest(url: url)
         webView.load(request)
+        addSwipeToPreviousViewControllerGesture()
     }
     
     @objc private func didTapBackButton() {

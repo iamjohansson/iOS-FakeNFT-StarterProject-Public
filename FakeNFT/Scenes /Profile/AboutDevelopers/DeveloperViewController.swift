@@ -53,6 +53,7 @@ class DeveloperViewController: UIViewController {
         setup()
         setupNavBar()
         startAnimation()
+        addSwipeToPreviousViewControllerGesture()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

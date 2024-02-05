@@ -67,6 +67,7 @@ final class MyNFTViewController: UIViewController {
         addSubview()
         applyConstraint()
         setupPresenter()
+        addSwipeToPreviousViewControllerGesture()
     }
     
     // MARK: Methods

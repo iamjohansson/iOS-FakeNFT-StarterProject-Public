@@ -110,6 +110,7 @@ final class CatalogСollectionViewController: UIViewController {
         setupConstraints()
         setupNavBackButton()
         presenter.presentCollectionViewData()
+        addSwipeToPreviousViewControllerGesture()
     }
     
     private func setupConstraints() {
